@@ -1,8 +1,8 @@
 {
-  "status": "commited",
+  "status": "init",
   "type": "frontend",
   "scope": "codebase",
-  "localEndpoint": "http://localhost:5000",
+  "localEndpoint": "http://localhost:5000/",
   "loginUser": "admin@minegocio.com",
   "loginPassword": "admin123",
   "executionArgs": {
@@ -11,6 +11,9 @@
     "testIds": [],
     "additionalInstruction": "Run all tests including: home page loads, login page works, dark mode toggle, menu responsive, services display, registration, booking flow",
     "serverMode": "development",
-    "envs": {}
-  }
+    "envs": {
+      "API_KEY": "sk-user-mYK_8iLFGW487VmdRLR65xNq-6aHe1ntkTZQDoUE5H-rlgXiCUKTz3Bs63HjLEMI5zDagVZ0-fw_8saEc67DMSi4gTEJBHXHL8jSrh9NrrUiDO0PRkzvK4-hAb-Z7p1m_Tc"
+    }
+  },
+  "serverPort": 61678
 }

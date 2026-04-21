@@ -85,3 +85,19 @@
 {"timestamp":"2026-04-20T23:49:32.764Z","level":"debug","message":"Code analyze params","correlationId":"28bd6852-799c-41f1-afd0-508c6e35524f","tool":"testsprite_generate_code_summary","context":{"projectRootPath":"C:\\Users\\aleja\\websites\\proyecto-base"}}
 {"timestamp":"2026-04-20T23:50:09.169Z","level":"info","message":"Tool invocation completed","correlationId":"841ea9a0-fb25-468d-8038-acd3ba099412","tool":"testsprite_check_account_info"}
 {"timestamp":"2026-04-20T23:50:09.168Z","level":"info","message":"Tool invocation started","correlationId":"841ea9a0-fb25-468d-8038-acd3ba099412","tool":"testsprite_check_account_info"}
+{"timestamp":"2026-04-21T16:13:02.582Z","level":"info","message":"Tool invocation started","correlationId":"67c1c119-dc50-4ba0-a833-84f5ed892cbc","tool":"testsprite_generate_code_and_execute"}
+{"timestamp":"2026-04-21T16:13:02.611Z","level":"info","message":"Tool invocation completed","correlationId":"67c1c119-dc50-4ba0-a833-84f5ed892cbc","tool":"testsprite_generate_code_and_execute"}
+{"timestamp":"2026-04-21T16:13:40.859Z","level":"debug","message":"Generate code and execute params","context":{"projectName":"proyecto-base","projectPath":"C:\\Users\\aleja\\websites\\proyecto-base","testIds":[],"serverMode":"development"}}
+{"timestamp":"2026-04-21T16:13:40.902Z","level":"error","message":"checkPortListening tcp error: 5000 localhost\nAggregateError"}
+{"timestamp":"2026-04-21T16:13:41.419Z","level":"error","message":"checkPortListening tcp error: 5000 localhost\nAggregateError"}
+{"timestamp":"2026-04-21T16:13:41.935Z","level":"error","message":"checkPortListening tcp error: 5000 localhost\nAggregateError"}
+{"timestamp":"2026-04-21T16:13:42.451Z","level":"error","message":"checkPortListening tcp error: 5000 localhost\nAggregateError"}
+{"timestamp":"2026-04-21T16:13:42.964Z","level":"info","message":"checkPortListening tcp failed, trying http fallback: 5000 localhost"}
+{"timestamp":"2026-04-21T16:13:51.043Z","level":"info","message":"Tool invocation started","correlationId":"25f5ee66-f345-437a-b404-c7cbcaf3cbd7","tool":"testsprite_bootstrap"}
+{"timestamp":"2026-04-21T16:13:51.057Z","level":"info","message":"HTTP server started, config saved","correlationId":"25f5ee66-f345-437a-b404-c7cbcaf3cbd7","tool":"testsprite_bootstrap"}
+{"timestamp":"2026-04-21T16:13:51.049Z","level":"info","message":"Attempting to start server (attempt 1/3)","correlationId":"25f5ee66-f345-437a-b404-c7cbcaf3cbd7","tool":"testsprite_bootstrap"}
+{"timestamp":"2026-04-21T16:13:51.054Z","level":"info","message":"HTTP server started successfully on port 61678","correlationId":"25f5ee66-f345-437a-b404-c7cbcaf3cbd7","tool":"testsprite_bootstrap"}
+{"timestamp":"2026-04-21T16:13:51.045Z","level":"debug","message":"Initialization params","correlationId":"25f5ee66-f345-437a-b404-c7cbcaf3cbd7","tool":"testsprite_bootstrap","context":{"localPort":5000,"type":"frontend","projectPath":"C:\\Users\\aleja\\websites\\proyecto-base","testScope":"codebase"}}
+{"timestamp":"2026-04-21T16:13:52.389Z","level":"info","message":"GET /init?project_path=C%3A%5CUsers%5Caleja%5Cwebsites%5Cproyecto-base&default_type=frontend 200 113ms","correlationId":"25f5ee66-f345-437a-b404-c7cbcaf3cbd7","tool":"testsprite_bootstrap"}
+{"timestamp":"2026-04-21T16:13:52.736Z","level":"info","message":"GET /api/config?project_path=C%3A%5CUsers%5Caleja%5Cwebsites%5Cproyecto-base 200 7ms","correlationId":"25f5ee66-f345-437a-b404-c7cbcaf3cbd7","tool":"testsprite_bootstrap"}
+{"timestamp":"2026-04-21T16:13:53.307Z","level":"info","message":"GET /favicon.ico 404 2ms","correlationId":"25f5ee66-f345-437a-b404-c7cbcaf3cbd7","tool":"testsprite_bootstrap"}

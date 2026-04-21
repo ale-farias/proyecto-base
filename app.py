@@ -882,13 +882,19 @@ def index():
     '''
 
 if __name__ == '__main__':
+    import os
+    
     # Verificar que existe la base de datos
     if not os.path.exists(DB_NAME):
         print("[WARN] Base de datos no encontrada. Ejecuta: python init_db.py")
-        print("  Luego reinicia el servidor.")
-
+        print("     Luego reinicia el servidor.")
+    
+    # Obtener el puerto de Render (o usar 5000 localmente)
+    port = int(os.environ.get('PORT', 5000))
+    
     print("=" * 50)
     print("[OK] Servidor iniciado")
-    print("   http://localhost:5000")
+    print(f"     Puerto: {port}")
     print("=" * 50)
-    app.run(debug=True, port=5000)
+    
+    app.run(debug=True, host='0.0.0.0', port=port)

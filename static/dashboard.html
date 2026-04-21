@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Panel - Mi Negocio</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="contenedor header-contenido">
+            <a href="/static/index.html" class="logo">Mi Negocio</a>
+            <button class="menu-toggle">☰</button>
+            <nav class="nav" id="nav-menu">
+                <div id="nav-user" class="nav-user"></div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="#mis-turnos" class="sidebar-link activo">Mis Turnos</a></li>
+                <li><a href="#reservar" class="sidebar-link">Reservar Turno</a></li>
+                <li><a href="#perfil" class="sidebar-link">Mi Perfil</a></li>
+                <li><a href="/static/index.html" class="sidebar-link">← Volver al inicio</a></li>
+            </ul>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="dashboard-contenido">
+            <!-- Mis Turnos -->
+            <section id="mis-turnos">
+                <div class="dashboard-header">
+                    <h1>Mis Turnos</h1>
+                    <p>Gestiona tus reservas</p>
+                </div>
+
+                <div id="turnos-container">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reservar Turno -->
+            <section id="reservar" class="oculto" style="margin-top: 40px;">
+                <div class="dashboard-header">
+                    <h1>Reservar Turno</h1>
+                    <p>Selecciona el servicio y horario</p>
+                </div>
+
+                <!-- Paso 1: Seleccionar Servicio -->
+                <div class="tarjeta" style="margin-bottom: 20px;">
+                    <h3>Paso 1: Selecciona un Servicio</h3>
+                    <div id="servicios-reserva" style="margin-top: 1rem;">
+                        <div class="loading"><div class="spinner"></div></div>
+                    </div>
+                </div>
+
+                <!-- Paso 2: Seleccionar Fecha -->
+                <div id="paso-fecha" class="tarjeta oculto" style="margin-bottom: 20px;">
+                    <h3>Paso 2: Selecciona la Fecha</h3>
+                    <div class="form-grupo" style="margin-top: 1rem;">
+                        <input type="date" id="fecha-reserva" class="form-input" min="">
+                    </div>
+                </div>
+
+                <!-- Paso 3: Seleccionar Hora -->
+                <div id="paso-horario" class="tarjeta oculto" style="margin-bottom: 20px;">
+                    <h3>Paso 3: Selecciona el Horario</h3>
+                    <div id="horarios-grid" class="horarios-grid" style="margin-top: 1rem;"></div>
+                </div>
+
+                <!-- Paso 4: Confirmar -->
+                <div id="paso-confirmar" class="tarjeta oculto">
+                    <h3>Paso 4: Confirmar Reserva</h3>
+                    <div id="resumen-reserva" style="margin: 1rem 0;"></div>
+                    <div class="form-grupo">
+                        <label class="form-label">Notas (opcional)</label>
+                        <textarea id="notas-reserva" class="form-textarea" placeholder="Alguna observación..."></textarea>
+                    </div>
+                    <button id="btn-confirmar-reserva" class="btn btn-primario">Confirmar Reserva</button>
+                </div>
+            </section>
+
+            <!-- Mi Perfil -->
+            <section id="perfil" class="oculto" style="margin-top: 40px;">
+                <div class="dashboard-header">
+                    <h1>Mi Perfil</h1>
+                    <p>Actualiza tus datos personales</p>
+                </div>
+
+                <div class="tarjeta">
+                    <form id="perfil-form">
+                        <div class="form-grupo">
+                            <label class="form-label" for="perfil-nombre">Nombre</label>
+                            <input type="text" id="perfil-nombre" class="form-input" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label class="form-label" for="perfil-email">Email</label>
+                            <input type="email" id="perfil-email" class="form-input" disabled>
+                        </div>
+                        <div class="form-grupo">
+                            <label class="form-label" for="perfil-telefono">Teléfono</label>
+                            <input type="tel" id="perfil-telefono" class="form-input">
+                        </div>
+                        <div id="perfil-mensaje"></div>
+                        <button type="submit" class="btn btn-primario">Guardar Cambios</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        // Variables para reserva
+        let reservaActual = {
+            servicioId: null,
+            servicio: null,
+            fecha: null,
+            hora: null
+        };
+
+        // Proteger página
+        document.addEventListener('DOMContentLoaded', async () => {
+            const auth = await App.checkAuth();
+            if (!auth) {
+                window.location.href = '/static/login.html';
+                return;
+            }
+
+            const user = App.getUsuario();
+            if (user.rol === 'admin') {
+                window.location.href = '/static/admin.html';
+                return;
+            }
+
+            App.updateNav();
+            cargarMisTurnos();
+            cargarPerfil();
+            configurarReserva();
+
+            // Navegación
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('activo'));
+                        link.classList.add('activo');
+
+                        document.querySelectorAll('main > section').forEach(s => s.classList.add('oculto'));
+                        const section = document.querySelector(href);
+                        if (section) section.classList.remove('oculto');
+                    }
+                });
+            });
+        });
+
+        async function cargarMisTurnos() {
+            try {
+                const turnos = await App.loadMisTurnos();
+                const container = document.getElementById('turnos-container');
+
+                if (!turnos || turnos.length === 0) {
+                    container.innerHTML = '<div class="tarjeta texto-centrado"><p>No tienes turnos reservados</p><a href="#reservar" class="btn btn-primario" onclick="document.querySelector(\'[href=#reservar]\').click()">Reservar Ahora</a></div>';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <div class="tabla-contenedor">
+                        <table class="tabla">
+                            <thead>
+                                <tr>
+                                    <th>Servicio</th>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${turnos.map(t => `
+                                    <tr>
+                                        <td>${t.servicio_nombre}</td>
+                                        <td>${App.formatFecha(t.fecha)}</td>
+                                        <td>${t.hora}</td>
+                                        <td><span class="estado-badge estado-${t.estado}">${t.estado}</span></td>
+                                        <td>
+                                            ${t.estado === 'pendiente' || t.estado === 'confirmado'
+                                                ? `<button onclick="cancelarTurno(${t.id})" class="btn btn-chico btn-peligro">Cancelar</button>`
+                                                : '-'
+                                            }
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } catch (e) {
+                document.getElementById('turnos-container').innerHTML = `<div class="alerta alerta-error">Error al cargar turnos</div>`;
+            }
+        }
+
+        async function cancelarTurno(id) {
+            if (!confirm('¿Estás seguro de cancelar este turno?')) return;
+
+            try {
+                await App.cancelarTurno(id);
+                App.showAlert('Turno cancelado correctamente', 'exito');
+                cargarMisTurnos();
+            } catch (e) {
+                App.showAlert(e.message, 'error');
+            }
+        }
+
+        function cargarPerfil() {
+            const user = App.getUsuario();
+            document.getElementById('perfil-nombre').value = user.nombre;
+            document.getElementById('perfil-email').value = user.email;
+            document.getElementById('perfil-telefono').value = user.telefono || '';
+        }
+
+        document.getElementById('perfil-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const msg = document.getElementById('perfil-mensaje');
+
+            btn.disabled = true;
+
+            try {
+                await App.apiRequest('/auth/update-profile', {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        nombre: document.getElementById('perfil-nombre').value,
+                        telefono: document.getElementById('perfil-telefono').value
+                    })
+                });
+
+                const user = await App.apiRequest('/auth/me');
+                App.setUsuario(user);
+
+                msg.innerHTML = '<div class="alerta alerta-exito">Perfil actualizado correctamente</div>';
+                App.updateNav();
+            } catch (e) {
+                msg.innerHTML = `<div class="alerta alerta-error">${e.message}</div>`;
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        async function configurarReserva() {
+            const servicios = await App.loadServicios();
+            const container = document.getElementById('servicios-reserva');
+
+            // Establecer fecha mínima
+            const fechaInput = document.getElementById('fecha-reserva');
+            const manana = new Date();
+            manana.setDate(manana.getDate() + 1);
+            fechaInput.min = manana.toISOString().split('T')[0];
+
+            // Renderizar servicios
+            container.innerHTML = servicios.map(s => `
+                <div class="tarjeta tarjeta-servicio" style="cursor: pointer;" onclick="seleccionarServicio(${s.id}, '${s.nombre}', ${s.precio}, ${s.duracion})">
+                    <h4>${s.nombre}</h4>
+                    <p class="precio">${App.formatPrecio(s.precio)}</p>
+                    <p class="duracion">⏱️ ${s.duracion} min</p>
+                </div>
+            `).join('');
+        }
+
+        function seleccionarServicio(id, nombre, precio, duracion) {
+            reservaActual.servicioId = id;
+            reservaActual.servicio = { nombre, precio, duracion };
+
+            document.querySelectorAll('#servicios-reserva .tarjeta').forEach(t => t.style.borderColor = '');
+            event.target.closest('.tarjeta').style.borderColor = 'var(--color-primario)';
+
+            document.getElementById('paso-fecha').classList.remove('oculto');
+            document.getElementById('paso-horario').classList.add('oculto');
+            document.getElementById('paso-confirmar').classList.add('oculto');
+
+            document.getElementById('fecha-reserva').value = '';
+        }
+
+        document.getElementById('fecha-reserva').addEventListener('change', async (e) => {
+            const fecha = e.target.value;
+            if (!fecha || !reservaActual.servicioId) return;
+
+            reservaActual.fecha = fecha;
+
+            try {
+                const horarios = await App.loadHorariosDisponibles(fecha, reservaActual.servicioId);
+                const grid = document.getElementById('horarios-grid');
+
+                grid.innerHTML = `
+                    ${horarios.map(h => `
+                        <div class="hora-opcion" onclick="seleccionarHora('${h}')">${h}</div>
+                    `).join('')}
+                `;
+
+                if (horarios.length === 0) {
+                    grid.innerHTML = '<p>No hay horarios disponibles para esta fecha</p>';
+                }
+
+                document.getElementById('paso-horario').classList.remove('oculto');
+            } catch (e) {
+                App.showAlert('Error al cargar horarios', 'error');
+            }
+        });
+
+        function seleccionarHora(hora) {
+            reservaActual.hora = hora;
+
+            document.querySelectorAll('.hora-opcion').forEach(h => h.classList.remove('seleccionado'));
+            event.target.classList.add('seleccionado');
+
+            document.getElementById('resumen-reserva').innerHTML = `
+                <div class="alerta alerta-info">
+                    <strong>${reservaActual.servicio.nombre}</strong><br>
+                    📅 ${App.formatFecha(reservaActual.fecha)}<br>
+                    🕐 ${reservaActual.hora}<br>
+                    💰 ${App.formatPrecio(reservaActual.servicio.precio)}
+                </div>
+            `;
+
+            document.getElementById('paso-confirmar').classList.remove('oculto');
+        }
+
+        document.getElementById('btn-confirmar-reserva').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-confirmar-reserva');
+            btn.disabled = true;
+            btn.textContent = 'Reservando...';
+
+            try {
+                await App.crearTurno(
+                    reservaActual.servicioId,
+                    reservaActual.fecha,
+                    reservaActual.hora,
+                    document.getElementById('notas-reserva').value
+                );
+
+                App.showAlert('¡Turno reservado correctamente!', 'exito');
+
+                // Resetear formulario
+                reservaActual = { servicioId: null, servicio: null, fecha: null, hora: null };
+                document.getElementById('notas-reserva').value = '';
+                document.getElementById('paso-fecha').classList.add('oculto');
+                document.getElementById('paso-horario').classList.add('oculto');
+                document.getElementById('paso-confirmar').classList.add('oculto');
+                document.querySelectorAll('#servicios-reserva .tarjeta').forEach(t => t.style.borderColor = '');
+
+                // Ir a mis turnos
+                document.querySelector('[href="#mis-turnos"]').click();
+                cargarMisTurnos();
+            } catch (e) {
+                App.showAlert(e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Confirmar Reserva';
+            }
+        });
+    </script>
+</body>
+</html>

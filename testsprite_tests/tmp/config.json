@@ -1,0 +1,16 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:5000",
+  "loginUser": "admin@minegocio.com",
+  "loginPassword": "admin123",
+  "executionArgs": {
+    "projectName": "proyecto-base",
+    "projectPath": "C:\\Users\\aleja\\websites\\proyecto-base",
+    "testIds": [],
+    "additionalInstruction": "Run all tests including: home page loads, login page works, dark mode toggle, menu responsive, services display, registration, booking flow",
+    "serverMode": "development",
+    "envs": {}
+  }
+}

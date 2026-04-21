@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Mi Negocio</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="contenedor header-contenido">
+            <a href="/static/index.html" class="logo">🛠️ Administración</a>
+            <button class="menu-toggle">☰</button>
+            <nav class="nav" id="nav-menu">
+                <div id="nav-user" class="nav-user"></div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="#dashboard" class="sidebar-link">📊 Dashboard</a></li>
+                <li><a href="#turnos" class="sidebar-link">📅 Turnos</a></li>
+                <li><a href="#usuarios" class="sidebar-link">👥 Usuarios</a></li>
+                <li><a href="#servicios" class="sidebar-link">💼 Servicios</a></li>
+                <li><a href="#reseñas" class="sidebar-link">⭐ Reseñas</a></li>
+                <li><a href="#faqs" class="sidebar-link">❓ FAQs</a></li>
+                <li><a href="#config" class="sidebar-link">⚙️ Configuración</a></li>
+                <li><a href="/static/index.html" class="sidebar-link">← Volver al inicio</a></li>
+            </ul>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="dashboard-contenido">
+            <!-- DASHBOARD -->
+            <section id="dashboard">
+                <div class="dashboard-header">
+                    <h1>Dashboard</h1>
+                    <p>Resumen de tu negocio</p>
+                </div>
+
+                <div id="stats-container" class="tarjetas-stats">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="tarjeta">
+                        <h3>Turnos por Día (Últimos 7 días)</h3>
+                        <div class="chart-container">
+                            <canvas id="chart-container"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="tarjeta">
+                        <h3>🏆 Servicios Más Reservados</h3>
+                        <div id="servicios-top">
+                            <div class="loading"><div class="spinner"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tarjeta" style="margin-top: 20px;">
+                    <h3>Últimos Turnos</h3>
+                    <div id="ultimos-turnos">
+                        <div class="loading"><div class="spinner"></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TURNOS -->
+            <section id="turnos" class="oculto">
+                <div class="dashboard-header">
+                    <h1>Gestión de Turnos</h1>
+                    <p>Administra todas las reservas</p>
+                </div>
+
+                <div class="tarjeta" style="margin-bottom: 20px;">
+                    <div class="flex" style="gap: 10px; flex-wrap: wrap;">
+                        <button onclick="filtrarTurnos('')" class="btn btn-chico btn-secundario">Todos</button>
+                        <button onclick="filtrarTurnos('pendiente')" class="btn btn-chico btn-secundario">Pendientes</button>
+                        <button onclick="filtrarTurnos('confirmado')" class="btn btn-chico btn-secundario">Confirmados</button>
+                        <button onclick="filtrarTurnos('completado')" class="btn btn-chico btn-secundario">Completados</button>
+                        <button onclick="filtrarTurnos('cancelado')" class="btn btn-chico btn-secundario">Cancelados</button>
+                    </div>
+                </div>
+
+                <div id="turnos-container">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+            </section>
+
+            <!-- USUARIOS -->
+            <section id="usuarios" class="oculto">
+                <div class="dashboard-header">
+                    <h1>Usuarios</h1>
+                    <p>Gestiona los clientes registrados</p>
+                </div>
+
+                <div id="usuarios-container">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+            </section>
+
+            <!-- RESEÑAS -->
+            <section id="reseñas" class="oculto">
+                <div class="dashboard-header">
+                    <h1>Reseñas</h1>
+                    <p>Gestiona las reseñas de clientes</p>
+                </div>
+
+                <div class="tarjeta" style="margin-bottom: 20px;">
+                    <button onclick="abrirModalResena()" class="btn btn-primario">Agregar Reseña Manual</button>
+                </div>
+
+                <div id="reseñas-container">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+            </section>
+
+            <!-- FAQs -->
+            <section id="faqs" class="oculto">
+                <div class="dashboard-header">
+                    <h1>Preguntas Frecuentes</h1>
+                    <p>Gestiona las FAQs del sitio</p>
+                </div>
+
+                <div class="tarjeta" style="margin-bottom: 20px;">
+                    <button onclick="abrirModalFaq()" class="btn btn-primario">+ Nueva FAQ</button>
+                </div>
+
+                <div id="faqs-container">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+            </section>
+
+            <!-- SERVICIOS -->
+            <section id="servicios" class="oculto">
+                <div class="dashboard-header">
+                    <h1>Servicios</h1>
+                    <p>Administra los servicios ofrecidos</p>
+                </div>
+
+                <div class="tarjeta" style="margin-bottom: 20px;">
+                    <button onclick="abrirModalServicio()" class="btn btn-primario">+ Nuevo Servicio</button>
+                </div>
+
+                <div id="servicios-grid" class="servicios-grid">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+            </section>
+
+            <!-- CONFIGURACIÓN -->
+            <section id="config" class="oculto">
+                <div class="dashboard-header">
+                    <h1>Configuración</h1>
+                    <p>Personaliza tu negocio</p>
+                </div>
+
+                <div class="tarjeta">
+                    <form id="config-form">
+                        <h3>Información del Negocio</h3>
+                        <div class="form-grupo">
+                            <label class="form-label">Nombre del Negocio</label>
+                            <input type="text" id="conf-nombre" class="form-input">
+                        </div>
+                        <div class="form-grupo">
+                            <label class="form-label">Descripción</label>
+                            <textarea id="conf-descripcion" class="form-textarea"></textarea>
+                        </div>
+                        <div class="form-grupo">
+                            <label class="form-label">Teléfono</label>
+                            <input type="text" id="conf-telefono" class="form-input">
+                        </div>
+                        <div class="form-grupo">
+                            <label class="form-label">Email</label>
+                            <input type="email" id="conf-email" class="form-input">
+                        </div>
+                        <div class="form-grupo">
+                            <label class="form-label">Dirección</label>
+                            <input type="text" id="conf-direccion" class="form-input">
+                        </div>
+                        <div class="form-grupo">
+                            <label class="form-label">Horario de Atención</label>
+                            <input type="text" id="conf-horario" class="form-input">
+                        </div>
+                        <div class="form-grupo">
+                            <label class="form-label">WhatsApp (solo números con código de país)</label>
+                            <input type="text" id="conf-whatsapp" class="form-input">
+                        </div>
+
+                        <h3 style="margin-top: 2rem;">Colores</h3>
+                        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div class="form-grupo">
+                                <label class="form-label">Color Principal</label>
+                                <input type="color" id="conf-color-primario" class="form-input" style="height: 50px;">
+                            </div>
+                            <div class="form-grupo">
+                                <label class="form-label">Color Secundario</label>
+                                <input type="color" id="conf-color-secundario" class="form-input" style="height: 50px;">
+                            </div>
+                            <div class="form-grupo">
+                                <label class="form-label">Color de Acento</label>
+                                <input type="color" id="conf-color-acento" class="form-input" style="height: 50px;">
+                            </div>
+                            <div class="form-grupo">
+                                <label class="form-label">Color de Fondo</label>
+                                <input type="color" id="conf-color-fondo" class="form-input" style="height: 50px;">
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 2rem;">SEO</h3>
+                        <div class="form-grupo">
+                            <label class="form-label">Título (Meta Title)</label>
+                            <input type="text" id="conf-metatitle" class="form-input">
+                        </div>
+                        <div class="form-grupo">
+                            <label class="form-label">Descripción (Meta Description)</label>
+                            <textarea id="conf-metadescription" class="form-textarea"></textarea>
+                        </div>
+
+                        <div id="config-mensaje"></div>
+                        <button type="submit" class="btn btn-primario">Guardar Configuración</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Servicio -->
+    <div id="modal-servicio" class="modal-overlay oculto">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-titulo" id="modal-servicio-titulo">Nuevo Servicio</h3>
+                <button class="modal-cerrar" onclick="cerrarModalServicio()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="servicio-form">
+                    <input type="hidden" id="servicio-id">
+                    <div class="form-grupo">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" id="servicio-nombre" class="form-input" required>
+                    </div>
+                    <div class="form-grupo">
+                        <label class="form-label">Descripción</label>
+                        <textarea id="servicio-descripcion" class="form-textarea"></textarea>
+                    </div>
+                    <div class="form-grupo">
+                        <label class="form-label">Precio ($)</label>
+                        <input type="number" id="servicio-precio" class="form-input" required min="0">
+                    </div>
+                    <div class="form-grupo">
+                        <label class="form-label">Duración (minutos)</label>
+                        <input type="number" id="servicio-duracion" class="form-input" required min="15" step="15">
+                    </div>
+                    <div class="form-grupo">
+                        <label>
+                            <input type="checkbox" id="servicio-activo" checked> Activo
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button onclick="cerrarModalServicio()" class="btn btn-secundario">Cancelar</button>
+                <button onclick="guardarServicio()" class="btn btn-primario">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal FAQ -->
+    <div id="modal-faq" class="modal-overlay oculto">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-titulo" id="modal-faq-titulo">Nueva FAQ</h3>
+                <button class="modal-cerrar" onclick="cerrarModalFaq()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="faq-form">
+                    <input type="hidden" id="faq-id">
+                    <div class="form-grupo">
+                        <label class="form-label">Pregunta</label>
+                        <input type="text" id="faq-pregunta" class="form-input" required>
+                    </div>
+                    <div class="form-grupo">
+                        <label class="form-label">Respuesta</label>
+                        <textarea id="faq-respuesta" class="form-textarea" required></textarea>
+                    </div>
+                    <div class="form-grupo">
+                        <label class="form-label">Orden</label>
+                        <input type="number" id="faq-orden" class="form-input" value="0">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button onclick="cerrarModalFaq()" class="btn btn-secundario">Cancelar</button>
+                <button onclick="guardarFaq()" class="btn btn-primario">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        let filtroTurnoActual = '';
+
+        // Proteger página
+        document.addEventListener('DOMContentLoaded', async () => {
+            const auth = await App.checkAuth();
+            if (!auth) {
+                window.location.href = '/static/login.html';
+                return;
+            }
+
+            const user = App.getUsuario();
+            if (user.rol !== 'admin') {
+                window.location.href = '/static/dashboard.html';
+                return;
+            }
+
+            App.updateNav();
+            App.updateAdminNav();
+            
+            // Cargar sección según hash URL
+            const hash = window.location.hash || '#dashboard';
+            navegarSeccion(hash);
+            
+            // Escuchar cambios en el hash
+            window.addEventListener('hashchange', () => {
+                navegarSeccion(window.location.hash || '#dashboard');
+            });
+
+            // Navegación
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        window.location.hash = href;
+                    }
+                });
+            });
+        });
+
+        function navegarSeccion(hash) {
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('activo'));
+            document.querySelectorAll(`.sidebar-link[href="${hash}"]`).forEach(l => l.classList.add('activo'));
+
+            document.querySelectorAll('main > section').forEach(s => s.classList.add('oculto'));
+            const section = document.querySelector(hash);
+            if (section) section.classList.remove('oculto');
+
+            // Cargar datos de la sección
+            if (hash === '#dashboard') cargarDashboard();
+            if (hash === '#turnos') cargarTurnos();
+            if (hash === '#usuarios') cargarUsuarios();
+            if (hash === '#servicios') cargarServicios();
+            if (hash === '#reseñas') cargarReseñas();
+            if (hash === '#faqs' || hash === '#faqs') cargarFaqsAdmin();
+            if (hash === '#config') cargarConfig();
+        }
+
+        async function cargarDashboard() {
+            const stats = await App.loadEstadisticas();
+            
+            // Tarjetas de estadísticas
+            document.getElementById('stats-container').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon primary">👥</div>
+                    <div class="stat-numero">${stats.total_usuarios || 0}</div>
+                    <div class="stat-label">Clientes Registrados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon success">💼</div>
+                    <div class="stat-numero">${stats.total_servicios || 0}</div>
+                    <div class="stat-label">Servicios Ofrecidos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon warning">📅</div>
+                    <div class="stat-numero">${stats.turnos_mes || 0}</div>
+                    <div class="stat-label">Turnos del Mes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon primary">📈</div>
+                    <div class="stat-numero">${stats.turnos_hoy || 0}</div>
+                    <div class="stat-label">Turnos Hoy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon warning">⏳</div>
+                    <div class="stat-numero">${stats.turnos_pendientes || 0}</div>
+                    <div class="stat-label">Pendientes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon success">💰</div>
+                    <div class="stat-numero">${App.formatPrecio(stats.ingresos || 0)}</div>
+                    <div class="stat-label">Ingresos Totales</div>
+                </div>
+            `;
+
+            // Gráfico de turnos por día (barras)
+            const chartContainer = document.getElementById('chart-container');
+            if (chartContainer && stats.turnos_por_dia && stats.turnos_por_dia.length > 0) {
+                // Preparar datos para el gráfico
+                const labels = stats.turnos_por_dia.map(t => {
+                    const d = new Date(t.fecha);
+                    return d.toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric' });
+                });
+                const data = stats.turnos_por_dia.map(t => t.total);
+
+                // Destruir gráfico anterior si existe
+                if (window.dashboardChart) {
+                    window.dashboardChart.destroy();
+                }
+
+                window.dashboardChart = new Chart(chartContainer, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Turnos por Día',
+                            data: data,
+                            backgroundColor: 'rgba(37, 99, 235, 0.8)',
+                            borderColor: '#2563eb',
+                            borderWidth: 1,
+                            borderRadius: 6,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: true, text: 'Turnos últimos 7 días', color: 'var(--color-texto)' }
+                        },
+                        scales: {
+                            y: { 
+                                beginAtZero: true,
+                                ticks: { stepSize: 1 }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Servicios más reservados
+            const serviciosTopContainer = document.getElementById('servicios-top');
+            if (serviciosTopContainer && stats.servicios_top && stats.servicios_top.length > 0) {
+                serviciosTopContainer.innerHTML = `
+                    <div class="ranking-list">
+                        ${stats.servicios_top.map((s, i) => `
+                            <div class="ranking-item">
+                                <span class="ranking-posicion">${i + 1}</span>
+                                <div class="ranking-info">
+                                    <span class="ranking-nombre">${s.nombre}</span>
+                                    <span class="ranking-cantidad">${s.total_reservas} reservas</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            // Últimos turnos
+            const ultimosContainer = document.getElementById('ultimos-turnos');
+            if (ultimosContainer && stats.ultimos_turnos && stats.ultimos_turnos.length > 0) {
+                ultimosContainer.innerHTML = `
+                    <table class="tabla">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Servicio</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${stats.ultimos_turnos.slice(0, 5).map(t => `
+                                <tr>
+                                    <td>${t.cliente_nombre}</td>
+                                    <td>${t.servicio_nombre}</td>
+                                    <td>${App.formatFecha(t.fecha)}</td>
+                                    <td>${t.hora}</td>
+                                    <td><span class="estado-badge estado-${t.estado}">${t.estado}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } else if (ultimosContainer) {
+                ultimosContainer.innerHTML = '<p class="texto-centrado">No hay turnos aún</p>';
+            }
+        }
+
+        async function cargarTurnos(estado = '') {
+            filtroTurnoActual = estado;
+            const turnos = await App.loadAllTurnos(estado);
+            const container = document.getElementById('turnos-container');
+
+            if (!turnos || turnos.length === 0) {
+                container.innerHTML = '<div class="tarjeta">No hay turnos</div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="tabla-contenedor">
+                    <table class="tabla">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Servicio</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${turnos.map(t => `
+                                <tr>
+                                    <td>${t.cliente_nombre}<br><small>${t.cliente_email}</small></td>
+                                    <td>${t.servicio_nombre}</td>
+                                    <td>${App.formatFecha(t.fecha)}</td>
+                                    <td>${t.hora}</td>
+                                    <td>
+                                        <select onchange="cambiarEstado(${t.id}, this.value)" class="form-select" style="width: auto;">
+                                            <option value="pendiente" ${t.estado === 'pendiente' ? 'selected' : ''}>Pendiente</option>
+                                            <option value="confirmado" ${t.estado === 'confirmado' ? 'selected' : ''}>Confirmado</option>
+                                            <option value="completado" ${t.estado === 'completado' ? 'selected' : ''}>Completado</option>
+                                            <option value="cancelado" ${t.estado === 'cancelado' ? 'selected' : ''}>Cancelado</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        ${t.cliente_telefono ? `<a href="https://wa.me/${t.cliente_telefono.replace(/\D/g, '')}" target="_blank" class="btn btn-chico btn-exito">📱</a>` : ''}
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function filtrarTurnos(estado) {
+            cargarTurnos(estado);
+        }
+
+        async function cambiarEstado(turnoId, nuevoEstado) {
+            try {
+                await App.cambiarEstadoTurno(turnoId, nuevoEstado);
+                App.showAlert('Estado actualizado', 'exito');
+            } catch (e) {
+                App.showAlert(e.message, 'error');
+                cargarTurnos(filtroTurnoActual);
+            }
+        }
+
+        async function cargarUsuarios() {
+            const usuarios = await App.loadAllUsuarios();
+            const container = document.getElementById('usuarios-container');
+
+            container.innerHTML = `
+                <div class="tabla-contenedor">
+                    <table class="tabla">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Turnos</th>
+                                <th>Fecha Registro</th>
+                                <th>Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${usuarios.map(u => `
+                                <tr>
+                                    <td>${u.nombre}</td>
+                                    <td>${u.email}</td>
+                                    <td>${u.telefono || '-'}</td>
+                                    <td>${u.total_turnos}</td>
+                                    <td>${new Date(u.fecha_registro).toLocaleDateString()}</td>
+                                    <td>${u.rol}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        async function cargarServicios() {
+            const servicios = await App.loadAllServicios();
+            const container = document.getElementById('servicios-grid');
+
+            container.innerHTML = servicios.map(s => `
+                <div class="tarjeta tarjeta-servicio">
+                    <h3>${s.nombre}</h3>
+                    <p>${s.descripcion || ''}</p>
+                    <p class="precio">${App.formatPrecio(s.precio)}</p>
+                    <p class="duracion">⏱️ ${s.duracion} min</p>
+                    <p>${s.activo ? '✅ Activo' : '❌ Inactivo'}</p>
+                    <div class="flex" style="gap: 10px; justify-content: center; margin-top: 10px;">
+                        <button onclick="abrirModalServicio(${s.id}, '${s.nombre}', '${s.descripcion || ''}', ${s.precio}, ${s.duracion}, ${s.activo})" class="btn btn-chico btn-secundario">Editar</button>
+                        <button onclick="eliminarServicio(${s.id})" class="btn btn-chico btn-peligro">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function abrirModalServicio(id = null, nombre = '', descripcion = '', precio = 0, duracion = 30, activo = true) {
+            document.getElementById('servicio-id').value = id || '';
+            document.getElementById('servicio-nombre').value = nombre;
+            document.getElementById('servicio-descripcion').value = descripcion;
+            document.getElementById('servicio-precio').value = precio;
+            document.getElementById('servicio-duracion').value = duracion;
+            document.getElementById('servicio-activo').checked = activo;
+            document.getElementById('modal-servicio-titulo').textContent = id ? 'Editar Servicio' : 'Nuevo Servicio';
+            document.getElementById('modal-servicio').classList.remove('oculto');
+        }
+
+        function cerrarModalServicio() {
+            document.getElementById('modal-servicio').classList.add('oculto');
+        }
+
+        async function guardarServicio() {
+            const id = document.getElementById('servicio-id').value;
+            const data = {
+                nombre: document.getElementById('servicio-nombre').value,
+                descripcion: document.getElementById('servicio-descripcion').value,
+                precio: parseFloat(document.getElementById('servicio-precio').value),
+                duracion: parseInt(document.getElementById('servicio-duracion').value),
+                activo: document.getElementById('servicio-activo').checked
+            };
+
+            try {
+                if (id) {
+                    await App.updateServicio(parseInt(id), data);
+                } else {
+                    await App.createServicio(data);
+                }
+                cerrarModalServicio();
+                cargarServicios();
+                App.showAlert('Servicio guardado correctamente', 'exito');
+                cerrarModalServicio();
+                cargarServicios();
+                App.showAlert('Servicio guardado', 'exito');
+            } catch (e) {
+                App.showAlert('Error: ' + e.message, 'error');
+            }
+        }
+
+        async function eliminarServicio(id) {
+            if (!confirm('¿Eliminar este servicio?')) return;
+
+            try {
+                await App.deleteServicio(id);
+                cargarServicios();
+                App.showAlert('Servicio eliminado correctamente', 'exito');
+            } catch (e) {
+                App.showAlert(e.message, 'error');
+            }
+        }
+
+        async function cargarConfig() {
+            const config = await App.loadConfig();
+
+            const mapeo = {
+                'nombre_negocio': 'conf-nombre',
+                'descripcion': 'conf-descripcion',
+                'telefono': 'conf-telefono',
+                'email': 'conf-email',
+                'direccion': 'conf-direccion',
+                'horario_atencion': 'conf-horario',
+                'whatsapp': 'conf-whatsapp',
+                'color_primario': 'conf-color-primario',
+                'color_secundario': 'conf-color-secundario',
+                'color_acento': 'conf-color-acento',
+                'color_fondo': 'conf-color-fondo',
+                'metatitle': 'conf-metatitle',
+                'metadescription': 'conf-metadescription'
+            };
+
+            for (const [clave, idInput] of Object.entries(mapeo)) {
+                const input = document.getElementById(idInput);
+                if (input && config[clave]) {
+                    input.value = config[clave];
+                }
+            }
+        }
+
+        document.getElementById('config-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const msg = document.getElementById('config-mensaje');
+
+            btn.disabled = true;
+
+            const config = {
+                nombre_negocio: document.getElementById('conf-nombre').value,
+                descripcion: document.getElementById('conf-descripcion').value,
+                telefono: document.getElementById('conf-telefono').value,
+                email: document.getElementById('conf-email').value,
+                direccion: document.getElementById('conf-direccion').value,
+                horario_atencion: document.getElementById('conf-horario').value,
+                whatsapp: document.getElementById('conf-whatsapp').value,
+                color_primario: document.getElementById('conf-color-primario').value,
+                color_secundario: document.getElementById('conf-color-secundario').value,
+                color_acento: document.getElementById('conf-color-acento').value,
+                color_fondo: document.getElementById('conf-color-fondo').value,
+                metatitle: document.getElementById('conf-metatitle').value,
+                metadescription: document.getElementById('conf-metadescription').value
+            };
+
+            try {
+                await App.updateConfig(config);
+                App.applyConfig(config);
+                msg.innerHTML = '<div class="alerta alerta-exito">Configuración guardada</div>';
+                App.showAlert('Configuración guardada', 'exito');
+            } catch (e) {
+                msg.innerHTML = `<div class="alerta alerta-error">${e.message}</div>`;
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // ============ RESEÑAS ============
+        async function cargarReseñas() {
+            try {
+                const reseñas = await App.loadAllResenas();
+                const container = document.getElementById('reseñas-container');
+
+                if (!reseñas || reseñas.length === 0) {
+                    container.innerHTML = '<div class="tarjeta">No hay reseñas</div>';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <div class="tabla-contenedor">
+                        <table class="tabla">
+                            <thead>
+                                <tr><th>Cliente</th><th>Reseña</th><th>Calificación</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr>
+                            </thead>
+                            <tbody>
+                                ${reseñas.map(r => `
+                                    <tr>
+                                        <td>${r.usuario_nombre}<br><small>${r.usuario_email}</small></td>
+                                        <td>${r.texto.substring(0, 50)}${r.texto.length > 50 ? '...' : ''}</td>
+                                        <td>${'★'.repeat(r.calificacion)}${'☆'.repeat(5-r.calificacion)}</td>
+                                        <td><span class="estado-badge estado-${r.aprobado ? 'completado' : 'pendiente'}">${r.aprobado ? 'Aprobada' : 'Pendiente'}</span></td>
+                                        <td>${new Date(r.fecha_creacion).toLocaleDateString()}</td>
+                                        <td>
+                                            <button onclick="aprobarResena(${r.id}, ${r.aprobado ? 0 : 1})" class="btn btn-chico ${r.aprobado ? 'btn-secundario' : 'btn-exito'}">${r.aprobado ? 'Des' : 'A'}probar</button>
+                                            <button onclick="eliminarResena(${r.id})" class="btn btn-chico btn-peligro">X</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } catch(e) {
+                document.getElementById('reseñas-container').innerHTML = '<div class="tarjeta">Error al cargar</div>';
+            }
+        }
+
+        async function aprobarResena(id, aprobado) {
+            try {
+                await App.updateResena(id, { aprobado });
+                cargarReseñas();
+                App.showAlert(aprobado ? 'Aprobada' : 'Desaprobada', 'exito');
+            } catch (e) { App.showAlert(e.message, 'error'); }
+        }
+
+        async function eliminarResena(id) {
+            if (!confirm('¿Eliminar?')) return;
+            try { await App.deleteResena(id); cargarReseñas(); App.showAlert('Eliminada', 'exito'); }
+            catch (e) { App.showAlert(e.message, 'error'); }
+        }
+
+        // ============ FAQs ============
+        async function cargarFaqsAdmin() {
+            try {
+                const faqs = await App.loadAllFaqs();
+                const container = document.getElementById('faqs-container');
+                if (!faqs || faqs.length === 0) { container.innerHTML = '<div class="tarjeta">No hay FAQs</div>'; return; }
+                container.innerHTML = faqs.map(f => `
+                    <div class="tarjeta" style="margin-bottom: 10px;">
+                        <div style="display:flex;justify-content:space-between;align-items:start;">
+                            <div><h4>${f.pregunta}</h4><p>${f.respuesta}</p></div>
+                            <div style="gap:8px;display:flex;">
+                                <button onclick="abrirModalFaq(${f.id}, '${f.pregunta.replace(/'/g, "\\'")}', '${f.respuesta.replace(/'/g, "\\'")}', ${f.orden})" class="btn btn-chico btn-secundario">✏️</button>
+                                <button onclick="eliminarFaqAdmin(${f.id})" class="btn btn-chico btn-peligro">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch(e) { document.getElementById('faqs-container').innerHTML = '<div class="tarjeta">Error</div>'; }
+        }
+
+        function abrirModalFaq(id = null, pregunta = '', respuesta = '', orden = 0) {
+            document.getElementById('faq-id').value = id || '';
+            document.getElementById('faq-pregunta').value = pregunta;
+            document.getElementById('faq-respuesta').value = respuesta;
+            document.getElementById('faq-orden').value = orden;
+            document.getElementById('modal-faq-titulo').textContent = id ? 'Editar FAQ' : 'Nueva FAQ';
+            document.getElementById('modal-faq').classList.remove('oculto');
+        }
+
+        async function guardarFaq() {
+            const id = document.getElementById('faq-id').value;
+            const data = { pregunta: document.getElementById('faq-pregunta').value, respuesta: document.getElementById('faq-respuesta').value, orden: parseInt(document.getElementById('faq-orden').value) };
+            try {
+                if (id) await App.updateFaq(parseInt(id), data);
+                else await App.createFaq(data.pregunta, data.respuesta);
+                cerrarModalFaq(); cargarFaqsAdmin(); App.showAlert('Guardada', 'exito');
+            } catch(e) { App.showAlert(e.message, 'error'); }
+        }
+
+        function cerrarModalFaq() { document.getElementById('modal-faq').classList.add('oculto'); }
+
+        async function eliminarFaqAdmin(id) {
+            if (!confirm('¿Eliminar?')) return;
+            try { await App.deleteFaq(id); cargarFaqsAdmin(); App.showAlert('Eliminada', 'exito'); }
+            catch(e) { App.showAlert(e.message, 'error'); }
+        }
+    </script>
+</body>
+</html>

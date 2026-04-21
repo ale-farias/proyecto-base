@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de reservas online para tu negocio">
+    <title>Mi Negocio - Inicio</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>">
+</head>
+<body>
+    <!-- Skip link para accesibilidad -->
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="contenedor header-contenido">
+            <a href="/" class="logo">
+                <span id="nombre-negocio">Mi Negocio</span>
+            </a>
+
+            <button class="menu-toggle">☰</button>
+
+            <nav class="nav">
+                <button id="theme-toggle" class="theme-toggle" onclick="App.toggleTheme()" title="Cambiar modo">🌙</button>
+                <a href="#servicios" class="nav-link">Servicios</a>
+                <a href="#testimonios" class="nav-link">Testimonios</a>
+                <a href="#contacto" class="nav-link">Contacto</a>
+                <div id="nav-user" class="nav-user"></div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+    <!-- Hero -->
+    <section class="hero">
+        <div class="contenedor">
+            <h1 class="hero-titulo"><span id="nombre-negocio-hero">Bienvenido a Mi Negocio</span></h1>
+            <p class="hero-subtitulo" id="descripcion-negocio">Los mejores servicios profesionales para ti. Reserva tu turno online de forma rápida y sencilla.</p>
+            <div class="hero-botones">
+                <a href="#reservar" class="btn btn-primario btn-lg">Reservar Turno</a>
+                <a href="#servicios" class="btn btn-secundario btn-lg">Ver Servicios</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios" class="servicios">
+        <div class="contenedor">
+            <h2 class="servicios-titulo">Nuestros Servicios</h2>
+            <div id="servicios-grid" class="servicios-grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Por qué elegirnos -->
+    <section id="elegirnos" class="elegirnos">
+        <div class="contenedor">
+            <h2 class="elegirnos-titulo">¿Por qué elegirnos?</h2>
+            <div class="elegirnos-grid">
+                <div class="elegirnos-card">
+                    <div class="elegirnos-icon">👤</div>
+                    <h3>Atención Personalizada</h3>
+                    <p>Nos adaptamos a tus necesidades individuales. Cada cliente es único y merece un trato personalizado.</p>
+                </div>
+                <div class="elegirnos-card">
+                    <div class="elegirnos-icon">🎓</div>
+                    <h3>Profesionales Calificados</h3>
+                    <p>Nuestro equipo está formado por especialistas con años de experiencia y capacitación continua.</p>
+                </div>
+                <div class="elegirnos-card">
+                    <div class="elegirnos-icon">💰</div>
+                    <h3>Mejores Precios</h3>
+                    <p>Calidad al mejor precio del mercado. Precios justos y transparentes sin letras pequeñas.</p>
+                </div>
+                <div class="elegirnos-card">
+                    <div class="elegirnos-icon">✨</div>
+                    <h3>Resultados Garantizados</h3>
+                    <p>Si no estás satisfecho, te devolvemos el dinero. Tu bienestar es nuestra prioridad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contador de clientes -->
+    <section class="contador-seccion">
+        <div class="contenedor">
+            <div class="contador-box">
+                <span class="contador-numero" id="contador-clientes">0</span>
+                <span class="contador-texto">clientes satisfechos nos prefieren</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios/Reseñas -->
+    <section id="testimonios" class="testimonios">
+        <div class="contenedor">
+            <h2 class="testimonios-titulo">Lo que dicen nuestros clientes</h2>
+            <div class="resena-promedio" id="resena-promedio">
+                <span class="estrellas-promedio">★★★★★</span>
+                <span class="promedio-texto">4.8/5 · basado en <span id="resena-count">0</span> reseñas</span>
+            </div>
+            <div id="testimonios-grid" class="testimonios-grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+            <div class="resena-cta" id="resena-cta">
+                <a href="/static/dashboard.html#resenar" class="btn btn-secundario">Deja tu reseña</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq-seccion">
+        <div class="contenedor">
+            <h2 class="faq-titulo">Preguntas Frecuentes</h2>
+            <div class="faq-container" id="faq-container">
+                <details class="faq-item">
+                    <summary class="faq-question">¿Cómo puedo reservar un turno?</summary>
+                    <div class="faq-answer">
+                        <p>Puedes reservar un turno online creando una cuenta o iniciando sesión. Selecciona el servicio, fecha y horario que más te convenga.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary class="faq-question">¿Cuál es la política de cancelación?</summary>
+                    <div class="faq-answer">
+                        <p>Puedes cancelar tu turno hasta 24 horas antes sin costo adicional. Cancelaciones con menos tiempo pueden tener cargo.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary class="faq-question">¿Qué métodos de pago aceptan?</summary>
+                    <div class="faq-answer">
+                        <p>Aceptamos efectivo, tarjetas de crédito/débito, Mercado Pago y transferencias bancarias.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary class="faq-question">¿Tienen garantía?</summary>
+                    <div class="faq-answer">
+                        <p>Sí, todos nuestros servicios tienen garantía de satisfacción. Si no quedás conforme, te devolvemos el dinero.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Reservar -->
+    <section id="reservar" class="servicios">
+        <div class="contenedor texto-centrado">
+            <h2>¡Reserva tu Turno Ahora!</h2>
+            <p style="max-width: 600px; margin: 0 auto 2rem; color: var(--color-texto-claro);">
+                Únete a nuestros clientes satisfechos y reserva tu turno de forma online en cualquier momento.
+            </p>
+            <a href="/static/register.html" class="btn btn-primario btn-lg">Crear Cuenta y Reservar</a>
+        </div>
+    </section>
+
+    <!-- Footer / Contacto -->
+    <footer id="contacto" class="footer">
+        <div class="contenedor">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-titulo" id="footer-nombre">Mi Negocio</h3>
+                    <p style="color: rgba(255,255,255,0.7);" id="footer-descripcion">Tu negocio local de confianza</p>
+                </div>
+                <div>
+                    <h4 class="footer-titulo">Contacto</h4>
+                    <p class="footer-link" id="footer-telefono">📞 +54 11 1234-5678</p>
+                    <p class="footer-link" id="footer-email">✉️ contacto@minegocio.com</p>
+                    <p class="footer-link" id="footer-direccion">📍 Av. Principal 123</p>
+                </div>
+                <div>
+                    <h4 class="footer-titulo">Horario</h4>
+                    <p class="footer-link" id="footer-horario">Lunes a Viernes: 9:00 - 18:00</p>
+                </div>
+                <div>
+                    <h4 class="footer-titulo">Síguenos</h4>
+                    <a href="#" class="footer-link" id="footer-facebook">Facebook</a>
+                    <a href="#" class="footer-link" id="footer-instagram">Instagram</a>
+                </div>
+            </div>
+            <div class="footer-abajo">
+                <p>&copy; <span id="año-actual"></span> <span id="footer-nombre-2">Mi Negocio</span>. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Flotante -->
+    <a href="#" id="whatsapp-btn" class="whatsapp-flotante" target="_blank" title="Escríbenos por WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.66-1.175-.66-1.247-.098-.091-.207-.047-.312.047-.099.099-.263.248-.35.298-.148.068-.289.099-.418.099-.123.006-.272-.012-.39-.099-.118-.099-.296-.248-.296-.496 0-.599.274-1.175.396-1.368.124-.198.273-.347.37-.495.099-.148.02-.297-.01-.42-.074-.297-.297-.744.099-1.173.347-.397 1.53-.42 2.08-.273.271.075.525.149.822.223.099.025.198.05.297.099.248.124.421.347.495.521.099.248-.025.595-.099.82-.148.52-1.323 1.273-2.664 2.196-1.025 1.025-1.768 1.173-2.47 1.099-.372-.099-1.272-.273-1.845-.695-.594-.446-1.025-.995-1.147-1.222-.124-.248-.02-.395.099-.52.124-.124.272-.347.397-.52.124-.173.173-.347.248-.52.074-.173.025-.298-.025-.397-.099-.173-.099-.595.099-.991.198-.397.521-.82.869-1.174.348-.347.748-.447 1.025-.496.273-.049.495-.025.695-.025.198-.012.521-.025.771.173.248.198.447.521.521.62.074.099.173.173.272.248.099.074.198.124.297.173.099.049.198-.025.322.025.125.05.272.124.421.248.149.124.248.198.347.347.099.149.149.248.198.347.05.099.05.198-.025.347-.074.149-.124.347-.124.421 0 .074-.012.173.025.272.099.248.396-.099.743-.347.347-.248.645-.446 1.023-.595.371-.149.743-.198 1.023-.099.273.099.595.396.743.595.148.198.248.198.347.198.099 0 .248-.025.347-.124.099-.099.173-.248.198-.347.025-.099.025-.198-.025-.272-.099-.149-.099-.595.025-.991z"/>
+        </svg>
+    </a>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Inicializar tema y renderizar botón
+            App.initTheme();
+            setTimeout(() => App.renderThemeButton(), 100);
+            
+            // Cargar configuración y datos
+            const config = await App.loadConfig();
+            const servicios = await App.loadServicios();
+            const testimonios = await App.loadTestimonios();
+            let resenas = [], statsResenas = {}, faqs = [], clientes = 0;
+
+            // Cargar datos adicionales (con manejo de errores)
+            try { resenas = await App.loadResenas(); } catch(e) { resenas = []; }
+            try { statsResenas = await App.loadResenasStats(); } catch(e) { statsResenas = {total: 0, promedio: 0}; }
+            try { faqs = await App.loadFaqs(); } catch(e) { faqs = []; }
+            try { clientes = await App.loadPublicStats(); } catch(e) { clientes = {clientes: 0}; }
+
+            // Actualizar footer
+            document.getElementById('año-actual').textContent = new Date().getFullYear();
+
+            if (config) {
+                document.getElementById('footer-telefono').textContent = config.telefono ? '📞 ' + config.telefono : '📞 +54 11 1234-5678';
+                document.getElementById('footer-email').textContent = config.email ? 'Email: ' + config.email : 'contacto@minegocio.com';
+                document.getElementById('footer-direccion').textContent = config.direccion ? '📍 ' + config.direccion : '📍 Av. Principal 123';
+                document.getElementById('footer-horario').textContent = config.horario_atencion || 'Lunes a Viernes: 9:00 - 18:00';
+                if (config.whatsapp) {
+                    document.getElementById('whatsapp-btn').href = 'https://wa.me/' + config.whatsapp.replace(/\D/g, '');
+                }
+                if (config.facebook) document.getElementById('footer-facebook').href = config.facebook;
+                if (config.instagram) document.getElementById('footer-instagram').href = config.instagram;
+            }
+
+            // Contador de clientes
+            const contadorEl = document.getElementById('contador-clientes');
+            if (contadorEl && clientes.clientes !== undefined) {
+                contadorEl.textContent = clientes.clientes;
+            }
+
+            // Promedio de reseñas
+            const resenaPromedioEl = document.getElementById('resena-promedio');
+            const resenaCountEl = document.getElementById('resena-count');
+            if (resenaCountEl) {
+                resenaCountEl.textContent = statsResenas.total || 0;
+            }
+            
+            // Ocultar botón de dejar reseña si no está logueado
+            const resenaCtaEl = document.getElementById('resena-cta');
+            if (resenaCtaEl) {
+                if (App.isLoggedIn()) {
+                    resenaCtaEl.style.display = 'block';
+                } else {
+                    resenaCtaEl.innerHTML = '<a href="/static/login.html" class="btn btn-secundario">Inicia sesión para dejar tu reseña</a>';
+                }
+            }
+
+            // Renderizar FAQs
+            const faqContainer = document.getElementById('faq-container');
+            if (faqContainer && faqs.length > 0) {
+                faqContainer.innerHTML = faqs.map(faq => `
+                    <details class="faq-item">
+                        <summary class="faq-question">${faq.pregunta}</summary>
+                        <div class="faq-answer"><p>${faq.respuesta}</p></div>
+                    </details>
+                `).join('');
+            }
+
+            // Renderizar servicios
+            const serviciosGrid = document.getElementById('servicios-grid');
+            if (servicios && servicios.length > 0) {
+                serviciosGrid.innerHTML = servicios.map(s => `
+                    <div class="tarjeta tarjeta-servicio">
+                        <h3>${s.nombre}</h3>
+                        <p>${s.descripcion || ''}</p>
+                        <p class="precio">${App.formatPrecio(s.precio)}</p>
+                        <p class="duracion">⏱️ ${s.duracion} minutos</p>
+                        <a href="/static/register.html" class="btn btn-primario btn-chico">Reservar</a>
+                    </div>
+                `).join('');
+            } else {
+                serviciosGrid.innerHTML = '<p class="texto-centrado">No hay servicios disponibles</p>';
+            }
+
+            // Renderizar testimonios (legacy) o reseñas
+            const testimoniosGrid = document.getElementById('testimonios-grid');
+            if (resenas && resenas.length > 0) {
+                testimoniosGrid.innerHTML = resenas.map(r => `
+                    <div class="testimonio-tarjeta">
+                        <div class="testimonio-estrellas">${'★'.repeat(r.calificacion)}${'☆'.repeat(5-r.calificacion)}</div>
+                        <p class="testimonio-texto">"${r.texto}"</p>
+                        <p class="testimonio-autor">- ${r.usuario_nombre}</p>
+                    </div>
+                `).join('');
+            } else if (testimonios && testimonios.length > 0) {
+                // Fallback a testimonios legacy
+                testimoniosGrid.innerHTML = testimonios.map(t => `
+                    <div class="testimonio-tarjeta">
+                        <div class="testimonio-estrellas">${'★'.repeat(t.calificacion)}${'☆'.repeat(5-t.calificacion)}</div>
+                        <p class="testimonio-texto">"${t.texto}"</p>
+                        <p class="testimonio-autor">- ${t.nombre}</p>
+                    </div>
+                `).join('');
+            } else {
+                testimoniosGrid.innerHTML = '<p class="texto-centrado">No hay reseñas aún. ¡Sé el primero en dejarnos tu opinión!</p>';
+            }
+        });
+    </script>
+    </main>
+</body>
+</html>

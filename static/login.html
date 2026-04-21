@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Mi Negocio</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1 class="auth-titulo">Iniciar Sesión</h1>
+            <p class="auth-subtitulo">Accede a tu cuenta para gestionar tus turnos</p>
+
+            <form id="login-form">
+                <div class="form-grupo">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="tu@email.com" autocomplete="email" required>
+                </div>
+
+                <div class="form-grupo">
+                    <label class="form-label" for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
+                </div>
+
+                <div id="error-message" class="form-error oculto"></div>
+
+                <button type="submit" class="btn btn-primario" style="width: 100%;">
+                    Iniciar Sesión
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>¿No tienes cuenta? <a href="/static/register.html">Regístrate aquí</a></p>
+                <p><a href="/static/index.html">← Volver al inicio</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        // Verificar si ya está logueado
+        if (App.isLoggedIn()) {
+            const user = App.getUsuario();
+            if (user.rol === 'admin') {
+                window.location.href = '/static/admin.html';
+            } else {
+                window.location.href = '/static/dashboard.html';
+            }
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error-message');
+            const btn = e.target.querySelector('button[type="submit"]');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+
+            emailInput.classList.remove('error');
+            passwordInput.classList.remove('error');
+
+            if (!email) {
+                emailInput.classList.add('error');
+                errorDiv.textContent = 'Por favor, ingresa tu email';
+                errorDiv.classList.remove('oculto');
+                emailInput.focus();
+                return;
+            }
+
+            if (!password) {
+                passwordInput.classList.add('error');
+                errorDiv.textContent = 'Por favor, ingresa tu contraseña';
+                errorDiv.classList.remove('oculto');
+                passwordInput.focus();
+                return;
+            }
+
+            errorDiv.classList.add('oculto');
+            btn.disabled = true;
+            btn.classList.add('loading');
+            btn.textContent = 'Iniciando...';
+
+            try {
+                const user = await App.login(email, password);
+
+                if (user.rol === 'admin') {
+                    window.location.href = '/static/admin.html';
+                } else {
+                    window.location.href = '/static/dashboard.html';
+                }
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('oculto');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Iniciar Sesión';
+            }
+        });
+    </script>
+</body>
+</html>

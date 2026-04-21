@@ -6,7 +6,7 @@
     <meta name="description" content="Sistema de reservas online para tu negocio">
     <title>Mi Negocio - Inicio</title>
     <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230f172a'><rect x='3' y='4' width='18' height='18' rx='2' stroke='none'/><line x1='16' y1='2' x2='16' y2='6' stroke='white' stroke-width='2'/><line x1='8' y1='2' x2='8' y2='6' stroke='white' stroke-width='2'/><line x1='3' y1='10' x2='21' y2='10' stroke='white' stroke-width='2'/></svg>">
 </head>
 <body>
     <!-- Skip link para accesibilidad -->
@@ -22,7 +22,9 @@
             <button class="menu-toggle">☰</button>
 
             <nav class="nav">
-                <button id="theme-toggle" class="theme-toggle" onclick="App.toggleTheme()" title="Cambiar modo">🌙</button>
+                <button id="theme-toggle" class="theme-toggle" onclick="App.toggleTheme()" title="Cambiar modo" aria-label="Cambiar modo oscuro/claro">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
                 <a href="#servicios" class="nav-link">Servicios</a>
                 <a href="#testimonios" class="nav-link">Testimonios</a>
                 <a href="#contacto" class="nav-link">Contacto</a>
@@ -63,22 +65,30 @@
             <h2 class="elegirnos-titulo">¿Por qué elegirnos?</h2>
             <div class="elegirnos-grid">
                 <div class="elegirnos-card">
-                    <div class="elegirnos-icon">👤</div>
+                    <div class="elegirnos-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-acento)" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
                     <h3>Atención Personalizada</h3>
                     <p>Nos adaptamos a tus necesidades individuales. Cada cliente es único y merece un trato personalizado.</p>
                 </div>
                 <div class="elegirnos-card">
-                    <div class="elegirnos-icon">🎓</div>
+                    <div class="elegirnos-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-acento)" stroke-width="2"><path d="M22 10v6M2 10l10-6 10 6"/><path d="M6 12v6c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2v-6"/></svg>
+                    </div>
                     <h3>Profesionales Calificados</h3>
                     <p>Nuestro equipo está formado por especialistas con años de experiencia y capacitación continua.</p>
                 </div>
                 <div class="elegirnos-card">
-                    <div class="elegirnos-icon">💰</div>
+                    <div class="elegirnos-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-acento)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
                     <h3>Mejores Precios</h3>
                     <p>Calidad al mejor precio del mercado. Precios justos y transparentes sin letras pequeñas.</p>
                 </div>
                 <div class="elegirnos-card">
-                    <div class="elegirnos-icon">✨</div>
+                    <div class="elegirnos-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-acento)" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                    </div>
                     <h3>Resultados Garantizados</h3>
                     <p>Si no estás satisfecho, te devolvemos el dinero. Tu bienestar es nuestra prioridad.</p>
                 </div>
@@ -169,9 +179,18 @@
                 </div>
                 <div>
                     <h4 class="footer-titulo">Contacto</h4>
-                    <a href="https://wa.me/5491161938432" class="footer-link" id="footer-telefono">📞 +54 11 6193-8432</a>
-                    <p class="footer-link" id="footer-email">✉️ alejandro_castillo@hotmail.es</p>
-                    <p class="footer-link" id="footer-direccion">📍 Av. Principal 123</p>
+                    <a href="https://wa.me/5491161938432" class="footer-link" id="footer-telefono">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        +54 11 6193-8432
+                    </a>
+                    <p class="footer-link" id="footer-email">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        alejandro_castillo@hotmail.es
+                    </p>
+                    <p class="footer-link" id="footer-direccion">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        Av. Principal 123
+                    </p>
                 </div>
                 <div>
                     <h4 class="footer-titulo">Horario</h4>
@@ -219,11 +238,11 @@
             document.getElementById('año-actual').textContent = new Date().getFullYear();
 
             if (config) {
-                document.getElementById('footer-telefono').textContent = '📞 +54 11 6193-8432';
+                document.getElementById('footer-telefono').textContent = '+54 11 6193-8432';
                 document.getElementById('footer-telefono').href = 'https://wa.me/5491161938432';
                 document.getElementById('whatsapp-btn').href = 'https://wa.me/5491161938432';
                 document.getElementById('footer-email').textContent = config.email ? 'Email: ' + config.email : 'alejandro_castillo@hotmail.es';
-                document.getElementById('footer-direccion').textContent = config.direccion ? '📍 ' + config.direccion : '📍 Av. Principal 123';
+                document.getElementById('footer-direccion').textContent = config.direccion || 'Av. Principal 123';
                 document.getElementById('footer-horario').textContent = config.horario_atencion || 'Lunes a Viernes: 9:00 - 18:00';
                 if (config.facebook) document.getElementById('footer-facebook').href = config.facebook;
                 if (config.instagram) document.getElementById('footer-instagram').href = config.instagram;
@@ -271,7 +290,10 @@
                         <h3>${s.nombre}</h3>
                         <p>${s.descripcion || ''}</p>
                         <p class="precio">${App.formatPrecio(s.precio)}</p>
-                        <p class="duracion">⏱️ ${s.duracion} minutos</p>
+                        <p class="duracion">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            ${s.duracion} minutos
+                        </p>
                         <a href="/static/register.html" class="btn btn-primario btn-chico">Reservar</a>
                     </div>
                 `).join('');

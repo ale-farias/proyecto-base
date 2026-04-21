@@ -389,12 +389,16 @@
                     <div class="stat-label">Turnos Hoy</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon warning">⏳</div>
+                    <div class="stat-icon warning">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
                     <div class="stat-numero">${stats.turnos_pendientes || 0}</div>
                     <div class="stat-label">Pendientes</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon success">💰</div>
+                    <div class="stat-icon success">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
                     <div class="stat-numero">${App.formatPrecio(stats.ingresos || 0)}</div>
                     <div class="stat-label">Ingresos Totales</div>
                 </div>
@@ -601,8 +605,11 @@
                     <h3>${s.nombre}</h3>
                     <p>${s.descripcion || ''}</p>
                     <p class="precio">${App.formatPrecio(s.precio)}</p>
-                    <p class="duracion">⏱️ ${s.duracion} min</p>
-                    <p>${s.activo ? '✅ Activo' : '❌ Inactivo'}</p>
+                    <p class="duracion">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        ${s.duracion} min
+                    </p>
+                    <p>${s.activo ? '<span style="color:var(--color-exito)">●</span> Activo' : '<span style="color:var(--color-error)">●</span> Inactivo'}</p>
                     <div class="flex" style="gap: 10px; justify-content: center; margin-top: 10px;">
                         <button onclick="abrirModalServicio(${s.id}, '${s.nombre}', '${s.descripcion || ''}', ${s.precio}, ${s.duracion}, ${s.activo})" class="btn btn-chico btn-secundario">Editar</button>
                         <button onclick="eliminarServicio(${s.id})" class="btn btn-chico btn-peligro">Eliminar</button>

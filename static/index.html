@@ -227,10 +227,8 @@
                 document.getElementById('footer-email').textContent = config.email ? 'Email: ' + config.email : 'alejandro_castillo@hotmail.es';
                 document.getElementById('footer-direccion').textContent = config.direccion ? '📍 ' + config.direccion : '📍 Av. Principal 123';
                 document.getElementById('footer-horario').textContent = config.horario_atencion || 'Lunes a Viernes: 9:00 - 18:00';
-                if (config.whatsapp) {
-                    document.getElementById('whatsapp-btn').href = 'https://wa.me/' + config.whatsapp.replace(/\D/g, '');
-                    document.getElementById('footer-telefono').href = 'https://wa.me/' + config.whatsapp.replace(/\D/g, '');
-                }
+                document.getElementById('whatsapp-btn').href = 'https://wa.me/5491161938432';
+                document.getElementById('footer-telefono').href = 'https://wa.me/5491161938432';
                 if (config.facebook) document.getElementById('footer-facebook').href = config.facebook;
                 if (config.instagram) document.getElementById('footer-instagram').href = config.instagram;
             }

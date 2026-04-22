@@ -1351,7 +1351,7 @@ p {
 
 /* ---------- AUTENTICACIÓN (LOGIN/REGISTER) ---------- */
 .auth-container {
-    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1442,7 +1442,7 @@ p {
 /* ---------- DASHBOARD ---------- */
 .dashboard-layout {
     display: flex;
-    min-height: 100vh;
+    min-height: 100svh;
     padding-top: var(--header-altura);
     background: var(--gradiente-hero);
 }
@@ -1902,7 +1902,7 @@ p {
         top: 0 !important;
         bottom: 0 !important;
         width: 280px !important;
-        height: 100vh !important;
+        height: 100svh !important;
         z-index: 1001 !important;
         transition: left 0.3s ease !important;
         box-shadow: var(--sombra-xl) !important;
@@ -2094,7 +2094,7 @@ p {
 
 /* ---------- PÁGINAS DE ERROR ---------- */
 .error-404 {
-    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2122,4 +2122,254 @@ p {
 
 .skip-link:focus {
     top: 0;
+}
+
+/* ========== RESPONSIVE MEJORADO ========== */
+
+/* Touch targets mínimos 44px (mobile-responsive-ux) */
+@media (max-width: 767px) {
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 12px 20px;
+    }
+
+    .btn-icono {
+        width: 44px;
+        height: 44px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        min-height: 44px;
+        font-size: 16px;
+    }
+
+    .menu-toggle {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .theme-toggle,
+    .theme-toggle-fixed,
+    .theme-toggle-dashboard {
+        width: 44px;
+        height: 44px;
+    }
+
+    #sidebar-toggle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .modal-cerrar {
+        width: 44px;
+        height: 44px;
+    }
+
+    .sidebar-link {
+        padding: 14px 16px;
+        min-height: 44px;
+    }
+}
+
+/* Tablas scrolleables en móvil */
+@media (max-width: 767px) {
+    .tabla-contenedor {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tabla {
+        min-width: 600px;
+    }
+
+    .tabla th,
+    .tabla td {
+        white-space: nowrap;
+        padding: 12px 14px;
+    }
+
+    .tabla-contenedor::after {
+        content: '← Desliza →';
+        display: block;
+        text-align: center;
+        font-size: 0.75rem;
+        color: var(--color-texto-muted);
+        padding: 8px;
+        background: var(--color-fondo-secundario);
+    }
+}
+
+/* Dashboard cliente: turnos como tarjetas en móvil */
+@media (max-width: 767px) {
+    .turnos-tarjetas {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .turno-card {
+        background: var(--color-fondo-card);
+        border: 1px solid var(--color-borde-claro);
+        border-radius: var(--radio-borde);
+        padding: 16px;
+    }
+
+    .turno-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 8px;
+    }
+
+    .turno-card-servicio {
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .turno-card-fecha {
+        color: var(--color-texto-claro);
+        font-size: 0.875rem;
+    }
+
+    .turno-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--color-borde-claro);
+    }
+
+    .turnos-container .tabla-contenedor {
+        display: none;
+    }
+
+    .turnos-container.has-cards .tabla-contenedor {
+        display: none;
+    }
+
+    .turnos-container.has-cards .turnos-tarjetas {
+        display: flex;
+    }
+}
+
+/* Serviciosgrid: 1 columna en móvil */
+@media (max-width: 767px) {
+    .servicios-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .servicios-grid .tarjeta {
+        padding: 20px 16px;
+    }
+}
+
+/* Testimoniosgrid: 1 columna en móvil */
+@media (max-width: 767px) {
+    .testimonios-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* Elegirnos grid: 1 columna en móvil */
+@media (max-width: 767px) {
+    .elegirnos-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* Dashboard stats: 1 columna en móvil */
+@media (max-width: 767px) {
+    .tarjetas-stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+
+    .stat-numero {
+        font-size: 1.5rem;
+    }
+}
+
+/* Formularios: 90% ancho + padding en móvil */
+@media (max-width: 767px) {
+    .auth-card {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    .form-grupo {
+        margin-bottom: 1rem;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Header más compacto en móvil */
+@media (max-width: 767px) {
+    .header {
+        height: 56px;
+    }
+
+    .header-contenido {
+        padding: 0 12px;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .logo img {
+        height: 28px;
+    }
+}
+
+/* Sidebar overlay para cerrar */
+@media (max-width: 1023px) {
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+}
+
+/* Grid servicios del dashboard en tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .servicios-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tarjetas-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Grid servicios del dashboard en escritorio */
+@media (min-width: 1024px) {
+    .servicios-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
 }

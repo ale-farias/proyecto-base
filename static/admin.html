@@ -34,7 +34,7 @@
     <!-- Dashboard Layout -->
     <div class="dashboard-layout">
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="admin-sidebar" style="display: block; position: fixed; left: -280px; top: 0; bottom: 0; width: 280px; z-index: 1001; padding-top: 64px; overflow-y: auto; transition: left 0.3s ease; background: var(--color-fondo-card);">
             <ul class="sidebar-nav">
                 <li><a href="#dashboard" class="sidebar-link">📊 Dashboard</a></li>
                 <li><a href="#turnos" class="sidebar-link">📅 Turnos</a></li>
@@ -316,13 +316,16 @@
 
     <script src="/static/js/app.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        let filtroTurnoActual = '';
+
+        // Todo en un solo DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', async () => {
             App.initTheme();
             setTimeout(() => App.renderThemeButton(), 100);
             
             // Toggle sidebar en móvil
             const sidebarToggle = document.getElementById('sidebar-toggle');
-            const sidebar = document.querySelector('.sidebar');
+            const sidebar = document.getElementById('admin-sidebar');
             const overlay = document.getElementById('sidebar-overlay');
             
             if (sidebarToggle && sidebar) {
@@ -338,26 +341,58 @@
                     });
                 }
             }
+
+            // Proteger página - solo verificar si hay hash en URL o si no hay token
+            const hash = window.location.hash;
+            const hasToken = localStorage.getItem('auth_token');
+            
+            // Si hay hash de sección y hay token, verificar auth
+            if (hasToken) {
+                try {
+                    const auth = await App.checkAuth();
+                    if (!auth) {
+                        window.location.href = '/static/login.html';
+                        return;
+                    }
+
+                    const user = App.getUsuario();
+                    if (user && user.rol !== 'admin') {
+                        window.location.href = '/static/dashboard.html';
+                        return;
+                    }
+
+                    App.updateNav();
+                    App.updateAdminNav();
+                    
+                    // Cargar sección según hash URL
+                    const sectionHash = hash || '#dashboard';
+                    navegarSeccion(sectionHash);
+                } catch (e) {
+                    console.log('Auth check failed, showing preview');
+                }
+            }
+
+            // Escuchar cambios en el hash
+            window.addEventListener('hashchange', () => {
+                navegarSeccion(window.location.hash || '#dashboard');
+            });
+
+            // Navegación
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        window.location.hash = href;
+                        // Cerrar sidebar en móvil después de seleccionar
+                        if (window.innerWidth < 1024 && sidebar) {
+                            sidebar.classList.remove('active');
+                            if (overlay) overlay.classList.remove('active');
+                        }
+                    }
+                });
+            });
         });
-        
-        let filtroTurnoActual = '';
-
-        // Proteger página
-        document.addEventListener('DOMContentLoaded', async () => {
-            const auth = await App.checkAuth();
-            if (!auth) {
-                window.location.href = '/static/login.html';
-                return;
-            }
-
-            const user = App.getUsuario();
-            if (user.rol !== 'admin') {
-                window.location.href = '/static/dashboard.html';
-                return;
-            }
-
-            App.updateNav();
-            App.updateAdminNav();
             
             // Cargar sección según hash URL
             const hash = window.location.hash || '#dashboard';

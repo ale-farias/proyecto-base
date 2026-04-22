@@ -495,5 +495,15 @@ window.App = {
     updateConfig,
     loadTestimonios,
     updateNav,
-    updateAdminNav
+    updateAdminNav,
+    loadResenas,
+    loadResenasStats,
+    createResena,
+    loadAllResenas,
+    updateResena,
+    deleteResena,
+    loadAllFaqs,
+    createFaq,
+    updateFaq,
+    deleteFaq
 };

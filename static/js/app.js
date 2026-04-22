@@ -110,11 +110,8 @@ function showAlert(message, type = 'info') {
     alertDiv.className = `alerta alerta-${type}`;
     alertDiv.textContent = message;
 
-    const container = document.querySelector('.contenedor');
-    if (container) {
-        container.insertBefore(alertDiv, container.firstChild);
-        setTimeout(() => alertDiv.remove(), 5000);
-    }
+    document.body.insertBefore(alertDiv, document.body.firstChild);
+    setTimeout(() => alertDiv.remove(), 5000);
 }
 
 function formatFecha(fecha) {

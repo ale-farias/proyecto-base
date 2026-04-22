@@ -668,6 +668,20 @@ p {
     justify-content: center;
 }
 
+.theme-toggle-fixed {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 9999;
+}
+
+.theme-toggle-dashboard {
+    position: fixed;
+    top: 70px;
+    right: 16px;
+    z-index: 1001;
+}
+
 .theme-toggle:hover {
     background: var(--color-fondo-card);
     border-color: var(--color-texto-claro);

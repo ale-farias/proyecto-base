@@ -5,6 +5,7 @@ Proporciona API RESTful para el sistema de reservas
 import os
 import sqlite3
 import hashlib
+import secrets
 from datetime import datetime, timedelta
 from functools import wraps
 
@@ -16,14 +17,24 @@ from flask_jwt_extended import (
 )
 
 app = Flask(__name__)
-app.secret_key = 'clave-secreta-cambiar-en-produccion'
 
-# Configuración JWT
-app.config['JWT_SECRET_KEY'] = 'jwt-secret-key-cambiar-en-produccion'
+app.secret_key = os.environ.get('SECRET_KEY') or secrets.token_hex(32)
+
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY') or secrets.token_hex(32)
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 
 jwt = JWTManager(app)
 CORS(app, supports_credentials=True)
+
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    storage_uri="memory://",
+    default_limits=["200 per day", "50 per hour"]
+)
 
 DB_NAME = "negocio.db"
 
@@ -73,6 +84,7 @@ def get_config():
 # ============ RUTAS DE AUTENTICACIÓN ============
 
 @app.route('/api/auth/register', methods=['POST'])
+@limiter.limit("5 per minute")
 def register():
     """Registrar nuevo usuario"""
     data = request.get_json()
@@ -117,6 +129,7 @@ def register():
     }), 201
 
 @app.route('/api/auth/login', methods=['POST'])
+@limiter.limit("10 per minute")
 def login():
     """Iniciar sesión"""
     data = request.get_json()
@@ -442,11 +455,13 @@ def get_all_turnos():
         JOIN usuarios u ON t.usuario_id = u.id
     '''
 
+    params = []
     if estado:
-        query += f" WHERE t.estado = '{estado}'"
+        query += " WHERE t.estado = ?"
+        params.append(estado)
     query += " ORDER BY t.fecha DESC, t.hora DESC"
 
-    turnos = query_to_list(query)
+    turnos = query_to_list(query, tuple(params))
     return jsonify(turnos)
 
 @app.route('/api/admin/turnos/<int:turno_id>/estado', methods=['PUT'])

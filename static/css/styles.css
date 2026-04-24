@@ -2059,6 +2059,11 @@ p {
         grid-template-columns: repeat(3, 1fr);
     }
 
+    .hora-opcion {
+        padding: 12px 8px;
+        font-size: 0.875rem;
+    }
+
     .auth-card {
         padding: 1.5rem;
     }
@@ -2235,6 +2240,12 @@ p {
     .turno-card-fecha {
         color: var(--color-texto-claro);
         font-size: 0.875rem;
+    }
+
+    .turno-card-cliente {
+        color: var(--color-texto-muted);
+        font-size: 0.8125rem;
+        margin-top: 4px;
     }
 
     .turno-card-footer {

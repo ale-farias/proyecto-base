@@ -336,7 +336,7 @@
 
             // Renderizar servicios
             container.innerHTML = servicios.map(s => `
-                <div class="tarjeta tarjeta-servicio" style="cursor: pointer;" onclick="seleccionarServicio(${s.id}, '${s.nombre}', ${s.precio}, ${s.duracion})">
+                <div class="tarjeta tarjeta-servicio" style="cursor: pointer;" onclick="seleccionarServicio(${s.id}, '${s.nombre}', ${s.precio}, ${s.duracion}, event)">
                     <h4>${s.nombre}</h4>
                     <p class="precio">${App.formatPrecio(s.precio)}</p>
                     <p class="duracion">
@@ -347,12 +347,12 @@
             `).join('');
         }
 
-        function seleccionarServicio(id, nombre, precio, duracion) {
+        function seleccionarServicio(id, nombre, precio, duracion, evt) {
             reservaActual.servicioId = id;
             reservaActual.servicio = { nombre, precio, duracion };
 
             document.querySelectorAll('#servicios-reserva .tarjeta').forEach(t => t.style.borderColor = '');
-            event.target.closest('.tarjeta').style.borderColor = 'var(--color-primario)';
+            evt.target.closest('.tarjeta').style.borderColor = 'var(--color-primario)';
 
             document.getElementById('paso-fecha').classList.remove('oculto');
             document.getElementById('paso-horario').classList.add('oculto');
@@ -373,7 +373,7 @@
 
                 grid.innerHTML = `
                     ${horarios.map(h => `
-                        <div class="hora-opcion" onclick="seleccionarHora('${h}')">${h}</div>
+                        <div class="hora-opcion" onclick="seleccionarHora('${h}', event)">${h}</div>
                     `).join('')}
                 `;
 
@@ -387,11 +387,11 @@
             }
         });
 
-        function seleccionarHora(hora) {
+        function seleccionarHora(hora, evt) {
             reservaActual.hora = hora;
 
             document.querySelectorAll('.hora-opcion').forEach(h => h.classList.remove('seleccionado'));
-            event.target.classList.add('seleccionado');
+            evt.target.classList.add('seleccionado');
 
             document.getElementById('resumen-reserva').innerHTML = `
                 <div class="alerta alerta-info">

@@ -1,8 +1,8 @@
 {
-  "status": "init",
+  "status": "commited",
   "type": "frontend",
   "scope": "codebase",
-  "localEndpoint": "http://localhost:5000/",
+  "localEndpoint": "http://localhost:5000",
   "loginUser": "admin@minegocio.com",
   "loginPassword": "admin123",
   "executionArgs": {
@@ -15,5 +15,6 @@
       "API_KEY": "sk-user-mYK_8iLFGW487VmdRLR65xNq-6aHe1ntkTZQDoUE5H-rlgXiCUKTz3Bs63HjLEMI5zDagVZ0-fw_8saEc67DMSi4gTEJBHXHL8jSrh9NrrUiDO0PRkzvK4-hAb-Z7p1m_Tc"
     }
   },
-  "serverPort": 61678
+  "serverPort": 58963,
+  "proxy": "http://c9dcdf84-01e1-4417-9cf4-996eba3e3700:S2VCXrZVhr4J3I1jCS1Qqg72HFooQdwE@tun.testsprite.com:8080"
 }

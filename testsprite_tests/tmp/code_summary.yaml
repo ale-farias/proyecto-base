@@ -3,165 +3,108 @@ type: frontend
 tech_stack:
   - Python
   - Flask
-  - Vanilla HTML/CSS/JavaScript
+  - Vanilla JavaScript
   - SQLite
 routes:
   - path: /static/index.html
     file: static/index.html
     auth_required: false
-    description: Landing page principal
+    description: Home page with services, testimonials, FAQ
   - path: /static/login.html
     file: static/login.html
     auth_required: false
-    description: Página de login
+    description: User login page
   - path: /static/register.html
     file: static/register.html
     auth_required: false
-    description: Página de registro
+    description: User registration page
   - path: /static/dashboard.html
     file: static/dashboard.html
     auth_required: true
-    description: Panel del cliente
+    description: User dashboard with bookings
   - path: /static/admin.html
     file: static/admin.html
     auth_required: true
-    description: Panel de administración
+    admin_only: true
+    description: Admin dashboard
 features:
-  - name: Registro de Usuario
-    description: Crear cuenta nuova
-    files:
-      - static/register.html
-      - static/js/app.js
-    entry_route: /static/register.html
-    user_interactions:
-      - Llenar nombre completo
-      - Llenar email
-      - Llenar contraseña
-      - Confirmar contraseña
-      - Clic en botón Crear Cuenta
-    api_calls:
-      - method: POST
-        endpoint: /api/auth/register
-    auth_required: false
-  - name: Inicio de Sesión
-    description: Login con email y contraseña
+  - name: User Login
+    description: Login with email and password
     files:
       - static/login.html
       - static/js/app.js
-    entry_route: /static/login.html
     user_interactions:
-      - Llenar email
-      - Llenar contraseña
-      - Clic en botón Iniciar Sesión
+      - Fill email field
+      - Fill password field
+      - Click Login button
+      - See error on invalid credentials
     api_calls:
       - method: POST
         endpoint: /api/auth/login
     auth_required: false
-  - name: Ver Servicios
-    description: Ver servicios disponibles en landing page
+  - name: User Registration
+    description: Register new user account
+    files:
+      - static/register.html
+      - static/js/app.js
+    user_interactions:
+      - Fill name field
+      - Fill email field
+      - Fill phone field
+      - Fill password field
+      - Fill confirm password
+      - Click Register button
+      - See success and redirect to dashboard
+    api_calls:
+      - method: POST
+        endpoint: /api/auth/register
+    auth_required: false
+  - name: Dark Mode Toggle
+    description: Toggle between light and dark theme
+    files:
+      - static/js/app.js
+    user_interactions:
+      - Click theme toggle button
+      - See theme change
+    auth_required: false
+  - name: Booking Flow
+    description: Create new appointment reservation
+    files:
+      - static/dashboard.html
+      - static/js/app.js
+    user_interactions:
+      - Click Reservar Turno
+      - Select service card
+      - Select date from picker
+      - Select time slot
+      - Click Confirmar Reserva
+      - See success message
+      - See new booking in Mis Turnos
+    api_calls:
+      - method: GET
+        endpoint: /api/servicios
+      - method: GET
+        endpoint: /api/turnos/disponibles
+      - method: POST
+        endpoint: /api/turnos
+    auth_required: true
+  - name: View Services
+    description: View available services on home page
     files:
       - static/index.html
-      - static/js/app.js
-    entry_route: /static/index.html
     user_interactions:
-      - Scroll hacia abajo
-      - Ver tarjetas de servicios
-      - Clic en botón Reservar de cada servicio
+      - Scroll to servicios section
+      - See service cards with name, price, duration
     api_calls:
       - method: GET
         endpoint: /api/servicios
     auth_required: false
-  - name: Reservar Turno
-    description: Reservar un turno
-    files:
-      - static/dashboard.html
-      - static/js/app.js
-    entry_route: /static/dashboard.html
-    user_interactions:
-      - Seleccionar servicio
-      - Seleccionar fecha
-      - Seleccionar horario disponível
-      - Confirmar reserva
-    api_calls:
-      - method: GET
-        endpoint: /api/turnos/disponibles?fecha=YYYY-MM-DD&servicio_id=X
-      - method: POST
-        endpoint: /api/turnos
-    auth_required: true
-  - name: Ver Mis Turnos
-    description: Ver turnos reservados
-    files:
-      - static/dashboard.html
-      - static/js/app.js
-    entry_route: /static/dashboard.html
-    user_interactions:
-      - Ver lista de turnos
-      - Ver estado de cada turno
-      - Clic en botón Cancelar (si aplica)
-    api_calls:
-      - method: GET
-        endpoint: /api/turnos
-    auth_required: true
-  - name: Gestión Admin
-    description: Panel de administración
-    files:
-      - static/admin.html
-      - static/js/app.js
-    entry_route: /static/admin.html
-    user_interactions:
-      - Ver dashboard de estadísticas
-      - Ver lista de usuarios
-      - Gestión de servicios (CRUD)
-      - Ver todos los turnos
-      - Cambiar estado de turno
-      - Modificar configuración
-    api_calls:
-      - method: GET
-        endpoint: /api/admin/estadisticas
-      - method: GET
-        endpoint: /api/admin/usuarios
-      - method: GET
-        endpoint: /api/admin/servicios
-      - method: POST
-        endpoint: /api/admin/servicios
-      - method: PUT
-        endpoint: /api/admin/servicios/{id}
-      - method: DELETE
-        endpoint: /api/admin/servicios/{id}
-      - method: GET
-        endpoint: /api/admin/turnos
-      - method: PUT
-        endpoint: /api/admin/turnos/{id}/estado
-    auth_required: true
-  - name: Toggle Modo Oscuro
-    description: Cambiar entre modo claro y oscuro
+  - name: Menu Responsive
+    description: Mobile navigation menu
     files:
       - static/css/styles.css
-      - static/js/app.js
-    entry_route: /static/index.html
     user_interactions:
-      - Clic en botón de tema (☀️/🌙)
-      - Ver cambio de colores
-    auth_required: false
-  - name: Navegación Responsive
-    description: Menú adaptativo para móvil y escritorio
-    files:
-      - static/css/styles.css
-      - static/index.html
-    entry_route: /static/index.html
-    user_interactions:
-      - En móvil: clic en ☰ para abrir menú
-      - En escritorio: menú siempre visible
-      - Clic en enlaces para scroll a secciones
-    auth_required: false
-  - name: Toggle Tema Oscuro
-    description: Cambiar tema claro/oscuro
-    files:
-      - static/css/styles.css
-      - static/js/app.js
-    entry_route: /static/index.html
-    user_interactions:
-      - Clic en botón (☀️/🌙)
-      - Ver cambio de colors
+      - Click hamburger menu on mobile
+      - See menu open/close
     auth_required: false
 known_limitations: []

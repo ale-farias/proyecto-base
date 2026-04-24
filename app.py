@@ -323,26 +323,37 @@ def get_horarios_disponibles():
     if not fecha or not servicio_id:
         return jsonify({'error': 'Fecha y servicio son obligatorios'}), 400
 
-    # Obtener duración del servicio
+    try:
+        servicio_id = int(servicio_id)
+    except (ValueError, TypeError):
+        return jsonify({'error': 'ID de servicio inválido'}), 400
+
+    from datetime import datetime
+    try:
+        fecha_obj = datetime.strptime(fecha, '%Y-%m-%d')
+        hoy = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        manana = hoy + timedelta(days=1)
+        if fecha_obj < manana:
+            return jsonify({'error': 'La fecha debe ser mañana o posterior'}), 400
+    except ValueError:
+        return jsonify({'error': 'Formato de fecha inválido. Use YYYY-MM-DD'}), 400
+
     servicio = query_one("SELECT duracion FROM servicios WHERE id = ?", (servicio_id,))
     if not servicio:
         return jsonify({'error': 'Servicio no encontrado'}), 404
 
     duracion = servicio['duracion']
 
-    # Obtener configuración de horario
     config = get_config()
-    hora_inicio = 9  # 9:00 por defecto
-    hora_fin = 18    # 18:00 por defecto
+    hora_inicio = 9
+    hora_fin = 18
 
-    # Generar horarios disponibles
     horarios = []
     hora_actual = hora_inicio
 
     while hora_actual < hora_fin:
         hora_str = f"{hora_actual:02d}:00"
 
-        # Verificar si hay turno reservado
         turno = query_one(
             "SELECT id FROM turnos WHERE fecha = ? AND hora = ? AND estado != 'cancelado'",
             (fecha, hora_str)
@@ -384,12 +395,28 @@ def crear_turno():
     if not servicio_id or not fecha or not hora:
         return jsonify({'error': 'Servicio, fecha y hora son obligatorios'}), 400
 
-    # Verificar que el servicio existe
+    try:
+        servicio_id = int(servicio_id)
+    except (ValueError, TypeError):
+        return jsonify({'error': 'ID de servicio inválido'}), 400
+
+    from datetime import datetime
+    try:
+        fecha_obj = datetime.strptime(fecha, '%Y-%m-%d')
+        hoy = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        manana = hoy + timedelta(days=1)
+        if fecha_obj < manana:
+            return jsonify({'error': 'La fecha debe ser mañana o posterior'}), 400
+    except ValueError:
+        return jsonify({'error': 'Formato de fecha inválido. Use YYYY-MM-DD'}), 400
+
+    if not hora or not isinstance(hora, str) or len(hora) != 5:
+        return jsonify({'error': 'Formato de hora inválido'}), 400
+
     servicio = query_one("SELECT id FROM servicios WHERE id = ? AND activo = 1", (servicio_id,))
     if not servicio:
         return jsonify({'error': 'Servicio no disponible'}), 400
 
-    # Verificar que el horario está disponible
     existente = query_one(
         "SELECT id FROM turnos WHERE fecha = ? AND hora = ? AND estado != 'cancelado'",
         (fecha, hora)

@@ -325,26 +325,37 @@
         });
 
         async function configurarReserva() {
-            const servicios = await App.loadServicios();
             const container = document.getElementById('servicios-reserva');
+            
+            try {
+                const servicios = await App.loadServicios();
+                
+                if (!servicios || !Array.isArray(servicios) || servicios.length === 0) {
+                    container.innerHTML = '<p class="alerta alerta-error">No hay servicios disponibles en este momento</p>';
+                    return;
+                }
 
-            // Establecer fecha mínima
-            const fechaInput = document.getElementById('fecha-reserva');
-            const manana = new Date();
-            manana.setDate(manana.getDate() + 1);
-            fechaInput.min = manana.toISOString().split('T')[0];
+                // Establecer fecha mínima
+                const fechaInput = document.getElementById('fecha-reserva');
+                const manana = new Date();
+                manana.setDate(manana.getDate() + 1);
+                fechaInput.min = manana.toISOString().split('T')[0];
 
-            // Renderizar servicios
-            container.innerHTML = servicios.map(s => `
-                <div class="tarjeta tarjeta-servicio" style="cursor: pointer;" onclick="seleccionarServicio(${s.id}, '${s.nombre}', ${s.precio}, ${s.duracion}, event)">
-                    <h4>${s.nombre}</h4>
-                    <p class="precio">${App.formatPrecio(s.precio)}</p>
-                    <p class="duracion">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        ${s.duracion} min
-                    </p>
-                </div>
-            `).join('');
+                // Renderizar servicios
+                container.innerHTML = servicios.map(s => `
+                    <div class="tarjeta tarjeta-servicio" style="cursor: pointer;" onclick="seleccionarServicio(${s.id}, '${s.nombre.replace(/'/g, "\\'")}', ${s.precio}, ${s.duracion}, event)">
+                        <h4>${s.nombre}</h4>
+                        <p class="precio">${App.formatPrecio(s.precio)}</p>
+                        <p class="duracion">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            ${s.duracion} min
+                        </p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error cargando servicios:', error);
+                container.innerHTML = '<p class="alerta alerta-error">Error al cargar servicios. Por favor, recargue la página.</p>';
+            }
         }
 
         function seleccionarServicio(id, nombre, precio, duracion, evt) {
@@ -371,19 +382,24 @@
                 const horarios = await App.loadHorariosDisponibles(fecha, reservaActual.servicioId);
                 const grid = document.getElementById('horarios-grid');
 
-                grid.innerHTML = `
-                    ${horarios.map(h => `
-                        <div class="hora-opcion" onclick="seleccionarHora('${h}', event)">${h}</div>
-                    `).join('')}
-                `;
+                if (!horarios || !Array.isArray(horarios)) {
+                    grid.innerHTML = '<p class="alerta alerta-error">Error al cargar horarios</p>';
+                    return;
+                }
 
                 if (horarios.length === 0) {
                     grid.innerHTML = '<p>No hay horarios disponibles para esta fecha</p>';
+                } else {
+                    grid.innerHTML = horarios.map(h => `
+                        <div class="hora-opcion" onclick="seleccionarHora('${h}', event)">${h}</div>
+                    `).join('');
                 }
 
                 document.getElementById('paso-horario').classList.remove('oculto');
             } catch (e) {
-                App.showAlert('Error al cargar horarios', 'error');
+                console.error('Error cargando horarios:', e);
+                document.getElementById('horarios-grid').innerHTML = '<p class="alerta alerta-error">Error al cargar horarios. Intente de nuevo.</p>';
+                document.getElementById('paso-horario').classList.remove('oculto');
             }
         });
 

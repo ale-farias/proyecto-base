@@ -3,11 +3,23 @@ Backend Flask - Sistema de Gestión de Turnos para Negocios Locales
 Proporciona API RESTful para el sistema de reservas
 """
 import os
+import sys
+import logging
 import sqlite3
 import hashlib
 import secrets
 from datetime import datetime, timedelta
 from functools import wraps
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s: %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
+logger.info("Iniciando aplicación Flask...")
 
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
@@ -44,6 +56,7 @@ def get_db_connection():
     """Obtiene conexión a la base de datos"""
     conn = sqlite3.connect(DB_NAME)
     conn.row_factory = sqlite3.Row
+    logger.debug(f"DB connection opened: {DB_NAME}")
     return conn
 
 def dict_from_row(row):
@@ -57,6 +70,7 @@ def query_to_list(query, params=()):
     cursor.execute(query, params)
     rows = cursor.fetchall()
     conn.close()
+    logger.debug(f"Query executed: {query[:50]}... - Rows: {len(rows)}")
     return [dict_from_row(row) for row in rows]
 
 def query_one(query, params=()):
@@ -75,6 +89,7 @@ def execute_query(query, params=()):
     cursor.execute(query, params)
     conn.commit()
     conn.close()
+    logger.info(f"Mutation executed: {query[:40]}...")
 
 def get_config():
     """Obtiene toda la configuración como diccionario"""
@@ -95,6 +110,7 @@ def register():
     telefono = data.get('telefono', '').strip()
 
     if not nombre or not email or not password:
+        logger.warning(f"Register failed: campos obligatorios faltantes - email: {email}")
         return jsonify({'error': 'Todos los campos son obligatorios'}), 400
 
     if len(password) < 6:
@@ -103,6 +119,7 @@ def register():
     # Verificar si el email ya existe
     existing = query_one("SELECT id FROM usuarios WHERE email = ?", (email,))
     if existing:
+        logger.warning(f"Register failed: email ya existe - {email}")
         return jsonify({'error': 'El email ya está registrado'}), 400
 
     # Hash de contraseña
@@ -465,31 +482,52 @@ def cancelar_turno(turno_id):
 @app.route('/api/admin/turnos', methods=['GET'])
 @jwt_required()
 def get_all_turnos():
-    """Obtener todos los turnos (admin)"""
+    """Obtener todos los turnos (admin) con paginación"""
     user_id = get_jwt_identity()
     user = query_one("SELECT rol FROM usuarios WHERE id = ?", (user_id,))
 
     if user['rol'] != 'admin':
+        logger.warning(f"Unauthorized access to admin turnos by user {user_id}")
         return jsonify({'error': 'Acceso denegado'}), 403
 
     estado = request.args.get('estado')
-
-    query = '''
-        SELECT t.*, s.nombre as servicio_nombre, s.precio, s.duracion,
-               u.nombre as cliente_nombre, u.email as cliente_email, u.telefono as cliente_telefono
+    pagina = int(request.args.get('pagina', 1))
+    por_pagina = min(int(request.args.get('por_pagina', 20)), 100)
+    
+    query_base = '''
         FROM turnos t
         JOIN servicios s ON t.servicio_id = s.id
         JOIN usuarios u ON t.usuario_id = u.id
     '''
-
+    where = ""
     params = []
     if estado:
-        query += " WHERE t.estado = ?"
+        where = " WHERE t.estado = ?"
         params.append(estado)
-    query += " ORDER BY t.fecha DESC, t.hora DESC"
-
-    turnos = query_to_list(query, tuple(params))
-    return jsonify(turnos)
+    
+    total = query_one(f"SELECT COUNT(*) as total {query_base}{where}", tuple(params))
+    total = total['total'] if total else 0
+    
+    query = f'''
+        SELECT t.*, s.nombre as servicio_nombre, s.precio, s.duracion,
+               u.nombre as cliente_nombre, u.email as cliente_email, u.telefono as cliente_telefono
+        {query_base}{where}
+        ORDER BY t.fecha DESC, t.hora DESC
+        LIMIT ? OFFSET ?
+    '''
+    offset = (pagina - 1) * por_pagina
+    params_pag = tuple(params + [por_pagina, offset])
+    
+    turnos = query_to_list(query, params_pag)
+    
+    logger.info(f"Get all turnos - page {pagina}, count {len(turnos)}")
+    return jsonify({
+        'data': turnos,
+        'pagina': pagina,
+        'por_pagina': por_pagina,
+        'total': total,
+        'total_paginas': (total + por_pagina - 1) // por_pagina
+    })
 
 @app.route('/api/admin/turnos/<int:turno_id>/estado', methods=['PUT'])
 @jwt_required()

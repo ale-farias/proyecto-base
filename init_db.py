@@ -53,6 +53,13 @@ def crear_tablas():
             FOREIGN KEY (servicio_id) REFERENCES servicios(id)
         )
     ''')
+    
+    # Índices para mejor rendimiento
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_turnos_fecha ON turnos(fecha)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_turnos_estado ON turnos(estado)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_turnos_usuario ON turnos(usuario_id)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios(email)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_servicios_activo ON servicios(activo)')
 
     # Tabla de configuración
     cursor.execute('''

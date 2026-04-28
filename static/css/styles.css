@@ -1322,6 +1322,63 @@ p {
     color: rgba(255, 255, 255, 0.5);
 }
 
+/* ---------- ICONOS SOCIALES ---------- */
+.footer-social {
+    display: flex;
+    gap: 12px;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    transition: var(--transicion);
+    text-decoration: none;
+}
+
+.social-icon.facebook {
+    background: #1877f2;
+    color: white;
+}
+
+.social-icon.facebook:hover {
+    background: #0d65d9;
+    transform: translateY(-2px);
+}
+
+.social-icon.instagram {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: white;
+}
+
+.social-icon.instagram:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(225, 48, 108, 0.4);
+}
+
+.social-icon.email {
+    background: #ea4335;
+    color: white;
+}
+
+.social-icon.email:hover {
+    background: #c5221f;
+    transform: translateY(-2px);
+}
+
+/* Dark mode icons */
+html[data-theme="dark"] .social-icon {
+    opacity: 0.9;
+}
+
+html[data-theme="dark"] .social-icon:hover {
+    opacity: 1;
+}
+
 /* ---------- WHATSAPP FLOTANTE ---------- */
 .whatsapp-flotante {
     position: fixed;
@@ -1332,6 +1389,37 @@ p {
     background: #25d366;
     border-radius: 50%;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--sombra-grande);
+    z-index: 999;
+    transition: var(--transicion);
+}
+
+.whatsapp-flotante:hover {
+    transform: scale(1.1);
+}
+
+.whatsapp-flotante svg {
+    width: 30px;
+    height: 30px;
+    fill: white;
+}
+
+/* WhatsApp responsive - tamaño móvil */
+@media (max-width: 767px) {
+    .whatsapp-flotante {
+        width: 56px;
+        height: 56px;
+        bottom: 16px;
+        right: 16px;
+    }
+
+    .whatsapp-flotante svg {
+        width: 26px;
+        height: 26px;
+    }
+}
     align-items: center;
     justify-content: center;
     box-shadow: var(--sombra-grande);

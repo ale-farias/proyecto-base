@@ -6,6 +6,7 @@
     <meta name="description" content="Sistema de reservas online para tu negocio">
     <title>Mi Negocio - Inicio</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230f172a'><rect x='3' y='4' width='18' height='18' rx='2' stroke='none'/><line x1='16' y1='2' x2='16' y2='6' stroke='white' stroke-width='2'/><line x1='8' y1='2' x2='8' y2='6' stroke='white' stroke-width='2'/><line x1='3' y1='10' x2='21' y2='10' stroke='white' stroke-width='2'/></svg>">
 </head>
 <body>
@@ -23,8 +24,8 @@
 
             <nav class="nav">
                 <button id="theme-toggle" class="theme-toggle theme-toggle-fixed" onclick="App.toggleTheme()" title="Cambiar modo" aria-label="Cambiar modo oscuro/claro">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-</button>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
                 <a href="#servicios" class="nav-link">Servicios</a>
                 <a href="#testimonios" class="nav-link">Testimonios</a>
                 <a href="#contacto" class="nav-link">Contacto</a>
@@ -198,8 +199,17 @@
                 </div>
                 <div>
                     <h4 class="footer-titulo">Síguenos</h4>
-                    <a href="https://www.facebook.com/alejandro.farias.16906/" class="footer-link" id="footer-facebook">Facebook</a>
-                    <a href="https://www.instagram.com/ale.david76/" class="footer-link" id="footer-instagram">Instagram</a>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/alejandro.farias.16906/" class="social-icon facebook" id="footer-facebook" target="_blank" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/ale.david76/" class="social-icon instagram" id="footer-instagram" target="_blank" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="mailto:alejandro_castillo@hotmail.es" class="social-icon email" id="footer-email-icon" target="_blank" title="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="footer-abajo">

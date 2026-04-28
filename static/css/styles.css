@@ -1394,16 +1394,16 @@ html[data-theme="dark"] .social-icon:hover {
     box-shadow: var(--sombra-grande);
     z-index: 999;
     transition: var(--transicion);
+    text-decoration: none;
 }
 
 .whatsapp-flotante:hover {
     transform: scale(1.1);
 }
 
-.whatsapp-flotante svg {
-    width: 30px;
-    height: 30px;
-    fill: white;
+.whatsapp-flotante i {
+    font-size: 32px;
+    color: white;
 }
 
 /* WhatsApp responsive - tamaño móvil */
@@ -1415,16 +1415,9 @@ html[data-theme="dark"] .social-icon:hover {
         right: 16px;
     }
 
-    .whatsapp-flotante svg {
-        width: 26px;
-        height: 26px;
+    .whatsapp-flotante i {
+        font-size: 26px;
     }
-}
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--sombra-grande);
-    z-index: 999;
-    transition: var(--transicion);
 }
 
 .whatsapp-flotante:hover {

@@ -1414,6 +1414,11 @@ html[data-theme="dark"] .social-icon:hover {
     transform: scale(1.1);
 }
 
+.whatsapp-flotante i {
+    font-size: 32px;
+    color: white;
+}
+
 .whatsapp-flotante svg {
     width: 28px;
     height: 28px;

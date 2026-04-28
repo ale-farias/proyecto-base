@@ -3,6 +3,13 @@
    Design: Modern Professional with Dark Mode Support
    ============================================ */
 
+/* Font Awesome 6 Fix - agregar variables que pueden faltar */
+:root {
+    --fa-style-family: 'Font Awesome 6 Free';
+    --fa-style: 900;
+    --fa-display: inline-block;
+}
+
 /* ---------- VARIABLES CSS (Personalizables) ---------- */
 :root {
     /* Colores principales - paleta refinada y profesional */
@@ -1335,9 +1342,14 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.125rem;
     transition: var(--transicion);
     text-decoration: none;
+    padding: 8px;
+}
+
+.social-icon svg {
+    width: 20px;
+    height: 20px;
 }
 
 .social-icon.facebook {
@@ -1395,29 +1407,16 @@ html[data-theme="dark"] .social-icon:hover {
     z-index: 999;
     transition: var(--transicion);
     text-decoration: none;
+    padding: 0;
 }
 
 .whatsapp-flotante:hover {
     transform: scale(1.1);
 }
 
-.whatsapp-flotante i {
-    font-size: 32px;
-    color: white;
-}
-
-/* WhatsApp responsive - tamaño móvil */
-@media (max-width: 767px) {
-    .whatsapp-flotante {
-        width: 56px;
-        height: 56px;
-        bottom: 16px;
-        right: 16px;
-    }
-
-    .whatsapp-flotante i {
-        font-size: 26px;
-    }
+.whatsapp-flotante svg {
+    width: 28px;
+    height: 28px;
 }
 
 .whatsapp-flotante:hover {

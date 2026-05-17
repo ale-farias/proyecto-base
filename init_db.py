@@ -3,8 +3,8 @@ Inicializador de base de datos
 Crea todas las tablas e inserta datos iniciales
 """
 import sqlite3
-import hashlib
 from datetime import datetime
+from werkzeug.security import generate_password_hash
 
 DB_NAME = "negocio.db"
 
@@ -147,7 +147,7 @@ def insertar_datos_iniciales():
     cursor.executemany("INSERT OR REPLACE INTO configuracion (clave, valor) VALUES (?, ?)", config_default)
 
     # Insertar usuario administrador por defecto
-    admin_password = hashlib.sha256('admin123'.encode()).hexdigest()
+    admin_password = generate_password_hash('admin123')
     cursor.execute('''
         INSERT INTO usuarios (nombre, email, password_hash, rol, telefono)
         VALUES (?, ?, ?, ?, ?)

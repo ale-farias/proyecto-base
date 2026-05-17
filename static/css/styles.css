@@ -191,36 +191,6 @@ html[data-theme="dark"] .footer {
     border-top-color: var(--color-borde);
 }
 
-/* Secciones en dark mode */
-html[data-theme="dark"] .hero,
-html[data-theme="dark"] .servicios,
-html[data-theme="dark"] .elegirnos,
-html[data-theme="dark"] .testimonios,
-html[data-theme="dark"] .faq-seccion {
-    background-color: var(--color-fondo) !important;
-}
-
-/* Tarjetas en dark mode: visual-design-system - fondo #1e1e1e */
-html[data-theme="dark"] .tarjeta,
-html[data-theme="dark"] .elegirnos-card,
-html[data-theme="dark"] .testimonio-tarjeta {
-    background-color: var(--color-fondo-card) !important;
-    border-color: var(--color-borde-claro) !important;
-}
-
-/* Botones en dark mode: visual-design-system */
-html[data-theme="dark"] .btn-secundario {
-    background: transparent;
-    color: var(--color-texto-claro);
-    border: 1px solid var(--color-borde);
-}
-
-html[data-theme="dark"] .btn-secundario:hover:not(:disabled) {
-    background: var(--color-fondo-secundario);
-    border-color: var(--color-borde);
-    color: var(--color-texto);
-}
-
 /* Formularios en modo oscuro */
 html[data-theme="dark"] .form-input,
 html[data-theme="dark"] .form-select,

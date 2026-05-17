@@ -562,10 +562,11 @@
 
         async function cargarTurnos(estado = '') {
             filtroTurnoActual = estado;
-            const turnos = await App.loadAllTurnos(estado);
+            const resp = await App.loadAllTurnos(estado);
+            const turnos = resp.data || resp || [];
             const container = document.getElementById('turnos-container');
 
-            if (!turnos || turnos.length === 0) {
+            if (!turnos || (Array.isArray(turnos) && turnos.length === 0)) {
                 container.innerHTML = '<div class="tarjeta">No hay turnos</div>';
                 return;
             }
@@ -624,7 +625,8 @@
         }
 
         async function cargarUsuarios() {
-            const usuarios = await App.loadAllUsuarios();
+            const resp = await App.loadAllUsuarios();
+            const usuarios = Array.isArray(resp) ? resp : resp.data || [];
             const container = document.getElementById('usuarios-container');
 
             container.innerHTML = `
@@ -713,9 +715,6 @@
                 cerrarModalServicio();
                 cargarServicios();
                 App.showAlert('Servicio guardado correctamente', 'exito');
-                cerrarModalServicio();
-                cargarServicios();
-                App.showAlert('Servicio guardado', 'exito');
             } catch (e) {
                 App.showAlert('Error: ' + e.message, 'error');
             }

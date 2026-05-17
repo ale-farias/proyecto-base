@@ -502,5 +502,7 @@ window.App = {
     loadAllFaqs,
     createFaq,
     updateFaq,
-    deleteFaq
+    deleteFaq,
+    loadFaqs,
+    loadPublicStats
 };

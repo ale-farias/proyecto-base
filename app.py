@@ -6,7 +6,6 @@ import os
 import sys
 import logging
 import sqlite3
-import hashlib
 import secrets
 from datetime import datetime, timedelta
 from functools import wraps
@@ -27,6 +26,7 @@ from flask_jwt_extended import (
     JWTManager, create_access_token, jwt_required,
     get_jwt_identity, get_jwt
 )
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -123,7 +123,7 @@ def register():
         return jsonify({'error': 'El email ya está registrado'}), 400
 
     # Hash de contraseña
-    password_hash = hashlib.sha256(password.encode()).hexdigest()
+    password_hash = generate_password_hash(password)
 
     # Insertar usuario
     conn = get_db_connection()
@@ -163,8 +163,7 @@ def login():
         return jsonify({'error': 'Email o contraseña incorrectos'}), 401
 
     # Verificar contraseña
-    password_hash = hashlib.sha256(password.encode()).hexdigest()
-    if user['password_hash'] != password_hash:
+    if not check_password_hash(user['password_hash'], password):
         return jsonify({'error': 'Email o contraseña incorrectos'}), 401
 
     # Crear token JWT
